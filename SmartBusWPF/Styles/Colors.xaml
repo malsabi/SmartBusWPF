@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--Surface-->
+    <SolidColorBrush x:Key="SurfaceColor" Color="#E6E6E6"/>
+    
+    <!--TextBox-->
+    <SolidColorBrush x:Key="TextBoxColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TextBoxBorderColor" Color="#D1D1D1"/>
+    <SolidColorBrush x:Key="WatermarkColor" Color="#C7C7C7"/>
+    
+    <!--Header-->
+    <SolidColorBrush x:Key="HeaderColor" Color="#1A1A1A"/>
+    
+    <!--Version-->
+    <SolidColorBrush x:Key="VersionColor" Color="#808080"/>
+    
+    <!--Border-->
+    <SolidColorBrush x:Key="SplitBorderColor" Color="#859BC1"/>
+</ResourceDictionary>

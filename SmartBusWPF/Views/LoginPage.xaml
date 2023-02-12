@@ -7,7 +7,7 @@
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       xmlns:helpers="clr-namespace:SmartBusWPF.Styles.Helpers"
       mc:Ignorable="d" 
-      d:DesignHeight="550" d:DesignWidth="850"
+      d:DesignHeight="650" d:DesignWidth="950"
       Title="LoginPage"
       ShowsNavigationUI="False">
 
@@ -26,8 +26,7 @@
                    Text="Bus Driver Login" 
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Style="{DynamicResource HeaderTextBlock}" />
-
+                   Style="{DynamicResource HeaderTextBlock}"/>
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
@@ -39,28 +38,27 @@
                                          Width="300"
                                          Height="55"
                                          VerticalAlignment="Center"
-                                         Image="/Assets/Images/Identification.png" />
+                                         Image="/Assets/Images/Identification.png"/>
 
             <controls:WatermarkedTextBox Watermark="Password"
                                          Width="300"
                                          Height="55"
                                          VerticalAlignment="Center"
-                                         Image="/Assets/Images/Key.png" />
+                                         Image="/Assets/Images/Key.png"/>
 
             <CheckBox Content="Stay Signed In ?"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      Width="300" />
+                      VerticalContentAlignment="Center"
+                      Width="300"
+                      Style="{DynamicResource CheckBoxStyle}"/>
 
-            <Button Content="LOGIN"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Width="120"
-                    Height="45"
-                    Background="#414BB2"
-                    Foreground="White"/>
+            <controls:CustomButton Width="150"
+                                   Height="50"
+                                   CornerRadius="15"
+                                   Content="LOGIN"
+                                   Command="{Binding LoginCommand}"/>
         </StackPanel>
-        
         
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
@@ -70,10 +68,29 @@
                     BorderThickness="2"
                     Height="1" />
 
-            <TextBlock Text="Version 1.0.0.0"
-                       HorizontalAlignment="Left"
-                       Margin="10, 10, 0, 0"
-                       Style="{DynamicResource VersionTextBlock}" />
+            <StackPanel Orientation="Horizontal">
+
+                <TextBlock Text="Version 1.0.0.0"
+                           Margin="10, 10, 0, 0"
+                           Style="{DynamicResource VersionTextBlock}"/>
+
+                <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                        BorderThickness="2"
+                        Margin="10, 10, 0, 0"
+                        Width="1" />
+
+                <controls:CustomButton Content="LOGS"
+                                       Margin="10, 9, 0, 0"
+                                       FontSize="16"
+                                       CornerRadius="0"
+                                       BorderThickness="0"
+                                       BorderBrush="#404AAF"
+                                       Foreground="{DynamicResource VersionColor}"
+                                       Background="Transparent"
+                                       HoverColor="#E0E0E0"
+                                       ClickColor="#BBBBBB"
+                                       Command="{Binding LogsCommand}"/>
+            </StackPanel>
         </StackPanel>
     </controls:CustomGrid>
 </Page>

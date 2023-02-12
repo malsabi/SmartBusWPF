@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--Surface-->
     <SolidColorBrush x:Key="SurfaceColor" Color="#E6E6E6"/>
-    
+
     <!--TextBox-->
     <SolidColorBrush x:Key="TextBoxColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="TextBoxBorderColor" Color="#D1D1D1"/>
@@ -14,6 +14,21 @@
     <!--Version-->
     <SolidColorBrush x:Key="VersionColor" Color="#808080"/>
     
+    <!--Welcome-->
+    <SolidColorBrush x:Key="WelcomeColor" Color="#000000"/>
+    
+    <!--TotalStudents-->
+    <SolidColorBrush x:Key="TotalStudentsColor" Color="#FFFFFF"/>
+
     <!--Border-->
     <SolidColorBrush x:Key="SplitBorderColor" Color="#859BC1"/>
+    
+    <!--Primary-->
+    <SolidColorBrush x:Key="PrimaryColor" Color="#404AAF"/>
+    <SolidColorBrush x:Key="PrimaryHoverColor" Color="#2A3174"/>
+    <SolidColorBrush x:Key="PrimaryClickColor" Color="#0E1026"/>
+    <SolidColorBrush x:Key="PrimaryTextColor" Color="#FFFFFF"/>
+    
+    <!--Secondary-->
+    <SolidColorBrush x:Key="SecondaryColor" Color="#353535"/>
 </ResourceDictionary>

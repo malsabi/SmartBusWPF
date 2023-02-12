@@ -9,13 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\GoBack.png" />
     <None Remove="Assets\Images\Identification.png" />
+    <None Remove="Assets\Images\Image_Placeholder.png" />
     <None Remove="Assets\Images\Key.png" />
     <None Remove="Assets\Images\Logo.png" />
+    <None Remove="Assets\Images\Start.png" />
+    <None Remove="Assets\Images\User.png" />
+    <None Remove="Assets\Images\UserAddress.png" />
+    <None Remove="Assets\Images\UserInfo.png" />
+    <None Remove="Assets\Images\UserSchool.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Images\GoBack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Images\Identification.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\Image_Placeholder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\Key.png">
@@ -24,17 +37,33 @@
     <Content Include="Assets\Images\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Images\Start.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\User.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\UserAddress.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\UserInfo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\UserSchool.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Bus.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <None Update="Assets\Apps\SmartBus.HuskyLens.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

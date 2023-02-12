@@ -21,4 +21,25 @@
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{StaticResource VersionColor}" />
     </Style>
+
+    <Style x:Key="WelcomeTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource WelcomeColor}" />
+    </Style>
+
+    <Style x:Key="TotalStudentsTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource TotalStudentsColor}" />
+    </Style>
+
+    <Style x:Key="StudentInfoTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="Black" />
+    </Style>
 </ResourceDictionary>

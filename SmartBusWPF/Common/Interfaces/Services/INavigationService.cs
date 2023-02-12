@@ -56,6 +56,6 @@ namespace SmartBusWPF.Common.Interfaces.Services
         /// </summary>
         /// <typeparam name="T">Represents the page type.</typeparam>
         /// <param name="args">Represents the arguments passed to the new page</param>
-        void Navigate<T>(object? args = null);
+        void Navigate<T>(object args = null);
     }
 }

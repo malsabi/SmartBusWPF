@@ -74,7 +74,7 @@ namespace SmartBusWPF
             {
                 processMonitorService.TerminateProcess();
             }
-            //processMonitorService.StartProcess();
+            processMonitorService.StartProcess();
 
             IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();
             serverSocketService.OnServerStartedListening += OnServerStartedListeningHandler;

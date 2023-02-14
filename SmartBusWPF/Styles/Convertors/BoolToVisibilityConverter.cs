@@ -5,23 +5,30 @@ using System.Globalization;
 
 namespace SmartBusWPF.Styles.Convertors
 {
-    public class BoolToVisibilityConverter : IMultiValueConverter
+    public class BoolToVisibilityConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool hasText =  !(bool)values[0];
-            bool hasFocus = (bool)values[1];
-            
-            if (hasText || hasFocus)
+            if (value is bool boolValue)
             {
-                return Visibility.Collapsed;
+                return boolValue ? Visibility.Visible : Visibility.Collapsed;
             }
-            return Visibility.Visible;
+            else
+            {
+                throw new ArgumentException("The value must be a boolean.", nameof(value));
+            }
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is Visibility visibilityValue)
+            {
+                return visibilityValue == Visibility.Visible;
+            }
+            else
+            {
+                throw new ArgumentException("The value must be a Visibility.", nameof(value));
+            }
         }
     }
 }

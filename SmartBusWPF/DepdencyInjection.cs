@@ -20,8 +20,10 @@ namespace SmartBusWPF
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IProcessMonitorService, ProcessMonitorService>();
+            services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IServerSocketService, ServerSocketService>();
             services.AddSingleton<IClientSocketService, ClientSocketService>();
+            services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<INavigationService, NavigationService>();
             return services;
         }

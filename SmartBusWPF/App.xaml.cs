@@ -31,6 +31,11 @@ namespace SmartBusWPF
         /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
         /// </summary>
         public IServiceProvider Services { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="BusDriverSessionModel"/> instance.
+        /// </summary>
+        public BusDriverSessionModel BusDriverSession { get; set; }
         #endregion
 
         #region "Private Methods"
@@ -69,7 +74,7 @@ namespace SmartBusWPF
             {
                 processMonitorService.TerminateProcess();
             }
-            processMonitorService.StartProcess();
+            //processMonitorService.StartProcess();
 
             IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();
             serverSocketService.OnServerStartedListening += OnServerStartedListeningHandler;

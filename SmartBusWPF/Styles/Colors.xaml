@@ -31,4 +31,7 @@
     
     <!--Secondary-->
     <SolidColorBrush x:Key="SecondaryColor" Color="#353535"/>
+    
+    <!--Danger-->
+    <SolidColorBrush x:Key="DangerColor" Color="#DC3545"/>
 </ResourceDictionary>

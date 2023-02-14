@@ -6,11 +6,16 @@
       xmlns:local="clr-namespace:SmartBusWPF.Views"
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       xmlns:helpers="clr-namespace:SmartBusWPF.Styles.Helpers"
+      xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="950"
       Title="LoginPage"
       ShowsNavigationUI="False">
 
+    <Page.Resources>
+        <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Page.Resources>
+    
     <controls:CustomGrid>
         <Image Grid.Row="0"
                Grid.Column="0"
@@ -38,12 +43,14 @@
                                          Width="300"
                                          Height="55"
                                          VerticalAlignment="Center"
+                                         Text="{Binding DriverID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Image="/Assets/Images/Identification.png"/>
 
             <controls:WatermarkedTextBox Watermark="Password"
                                          Width="300"
                                          Height="55"
                                          VerticalAlignment="Center"
+                                         Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Image="/Assets/Images/Key.png"/>
 
             <CheckBox Content="Stay Signed In ?"
@@ -51,6 +58,7 @@
                       VerticalAlignment="Center"
                       VerticalContentAlignment="Center"
                       Width="300"
+                      IsChecked="{Binding IsStaySignedIn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{DynamicResource CheckBoxStyle}"/>
 
             <controls:CustomButton Width="150"
@@ -58,6 +66,15 @@
                                    CornerRadius="15"
                                    Content="LOGIN"
                                    Command="{Binding LoginCommand}"/>
+
+            <TextBlock Text="{Binding LoginStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Width="300"
+                       Margin="0, 10, 0, 0"
+                       Visibility="{Binding ShowStatusLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                       Style="{DynamicResource LoginStatusTextBlock}">
+            </TextBlock>
         </StackPanel>
         
         <StackPanel Grid.Row="2"

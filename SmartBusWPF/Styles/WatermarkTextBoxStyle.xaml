@@ -3,7 +3,7 @@
                     xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
                     xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors">
 
-    <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <convertors:BoolToVisibilityMultiConverter x:Key="BoolToVisibilityMultiConverter"/>
 
     <Style TargetType="{x:Type controls:WatermarkedTextBox}">
         <Setter Property="FontFamily" Value="Segoe UI" />
@@ -19,19 +19,19 @@
                             Padding="2.5">
                         <Grid Background="{StaticResource TextBoxColor}">
                             <Image Source="{TemplateBinding Image}"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Height="25"
-                               Width="25"
-                               Margin="10, 0, 0, 0"/>
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Height="25"
+                                   Width="25"
+                                   Margin="10, 0, 0, 0"/>
 
                             <TextBlock x:Name="Watermark" 
-                                   Text="{TemplateBinding Watermark}"
-                                   VerticalAlignment="Center"
-                                   Margin="45, 0, 0, 0"
-                                   Style="{DynamicResource WatermarkTextBlock}">
+                                       Text="{TemplateBinding Watermark}"
+                                       VerticalAlignment="Center"
+                                       Margin="45, 0, 0, 0"
+                                       Style="{DynamicResource WatermarkTextBlock}">
                                 <TextBlock.Visibility>
-                                    <MultiBinding Converter="{StaticResource BoolToVisibilityConverter}">
+                                    <MultiBinding Converter="{StaticResource BoolToVisibilityMultiConverter}">
                                         <Binding ElementName="InputText" Path="Text.IsEmpty"/>
                                         <Binding ElementName="InputText" Path="IsFocused" />
                                     </MultiBinding>
@@ -39,14 +39,14 @@
                             </TextBlock>
 
                             <TextBox x:Name="InputText"
-                                 Margin="45, 0, 0, 0"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 VerticalAlignment="Center"
-                                 Text="{TemplateBinding Text}"
-                                 FontFamily="{TemplateBinding FontFamily}"
-                                 FontSize="{TemplateBinding FontSize}"
-                                 FontWeight="{TemplateBinding FontWeight}"/>
+                                     Margin="45, 0, 0, 0"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     VerticalAlignment="Center"
+                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                     FontFamily="{TemplateBinding FontFamily}"
+                                     FontSize="{TemplateBinding FontSize}"
+                                     FontWeight="{TemplateBinding FontWeight}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

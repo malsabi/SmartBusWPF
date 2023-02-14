@@ -42,4 +42,11 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="Black" />
     </Style>
+
+    <Style x:Key="LoginStatusTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{StaticResource DangerColor}" />
+    </Style>
 </ResourceDictionary>

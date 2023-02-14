@@ -10,6 +10,7 @@ using SmartBusWPF.Common.Enums;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
 
 namespace SmartBusWPF
 {
@@ -74,6 +75,7 @@ namespace SmartBusWPF
             {
                 processMonitorService.TerminateProcess();
             }
+            Thread.Sleep(3000);
             processMonitorService.StartProcess();
 
             IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();

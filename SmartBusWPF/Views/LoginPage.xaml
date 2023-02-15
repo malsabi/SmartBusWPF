@@ -50,8 +50,9 @@
                                          Width="300"
                                          Height="55"
                                          VerticalAlignment="Center"
-                                         Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Image="/Assets/Images/Key.png"/>
+                                         Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Image="/Assets/Images/Key.png"
+                                         Style="{DynamicResource PasswordTextBoxStyle}"/>
 
             <CheckBox Content="Stay Signed In ?"
                       HorizontalAlignment="Center"

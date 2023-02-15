@@ -24,10 +24,11 @@ namespace SmartBusWPF.ViewModels
 
         private async void Authenticate()
         {
+            bool isStaySignedIn = Properties.Settings.Default.IsStaySignedIn;
             string driverID = Properties.Settings.Default.DriverID;
             string password = Properties.Settings.Default.Password;
 
-            if (!string.IsNullOrEmpty(driverID) && !string.IsNullOrEmpty(password))
+            if (isStaySignedIn && !string.IsNullOrEmpty(driverID) && !string.IsNullOrEmpty(password))
             {
                 driverID = cryptographyService.Decrypt(driverID);
                 password = cryptographyService.Decrypt(password);

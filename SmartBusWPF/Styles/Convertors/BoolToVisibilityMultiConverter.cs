@@ -9,7 +9,7 @@ namespace SmartBusWPF.Styles.Convertors
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool hasText =  !(bool)values[0];
+            bool hasText = (int)values[0] > 0;
             bool hasFocus = (bool)values[1];
             
             if (hasText || hasFocus)

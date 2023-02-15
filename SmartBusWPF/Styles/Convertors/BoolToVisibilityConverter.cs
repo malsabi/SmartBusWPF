@@ -9,26 +9,21 @@ namespace SmartBusWPF.Styles.Convertors
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool boolValue)
+            if (value is bool isVisible)
             {
-                return boolValue ? Visibility.Visible : Visibility.Collapsed;
+                return isVisible ? Visibility.Visible : Visibility.Collapsed;
             }
-            else
-            {
-                throw new ArgumentException("The value must be a boolean.", nameof(value));
-            }
+
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Visibility visibilityValue)
+            if (value is Visibility visibility)
             {
-                return visibilityValue == Visibility.Visible;
+                return visibility == Visibility.Visible;
             }
-            else
-            {
-                throw new ArgumentException("The value must be a Visibility.", nameof(value));
-            }
+            throw new ArgumentException("The value must be a Visibility.", nameof(value));
         }
     }
 }

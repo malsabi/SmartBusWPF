@@ -43,7 +43,7 @@
                                      BorderThickness="0"
                                      Background="Transparent"
                                      VerticalAlignment="Center"
-                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
                                      FontFamily="{TemplateBinding FontFamily}"
                                      FontSize="{TemplateBinding FontSize}"
                                      FontWeight="{TemplateBinding FontWeight}"/>

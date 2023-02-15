@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SmartBusWPF.Views"
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       xmlns:helpers="clr-namespace:SmartBusWPF.Styles.Helpers"
-      xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
+      xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors" 
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="950"
       Title="LoginPage"
@@ -64,17 +64,25 @@
             <controls:CustomButton Width="150"
                                    Height="50"
                                    CornerRadius="15"
-                                   Content="LOGIN"
+                                   Content="{Binding LoginButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Command="{Binding LoginCommand}"/>
 
-            <TextBlock Text="{Binding LoginStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Width="300"
-                       Margin="0, 10, 0, 0"
-                       Visibility="{Binding ShowStatusLogin, Converter={StaticResource BoolToVisibilityConverter}}"
-                       Style="{DynamicResource LoginStatusTextBlock}">
-            </TextBlock>
+
+            <Border Background="{DynamicResource DangerColor}"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    CornerRadius="20"
+                    Width="300"
+                    Height="55"
+                    Margin="0, 10, 0, 0"
+                    Visibility="{Binding ShowLoginStatus, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <TextBlock Text="{Binding LoginStatus, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{DynamicResource LoginStatusTextBlock}"
+                           Margin="10, 0, 0, 0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" />
+            </Border>
         </StackPanel>
         
         <StackPanel Grid.Row="2"

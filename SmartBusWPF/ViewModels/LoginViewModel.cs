@@ -12,6 +12,7 @@ namespace SmartBusWPF.ViewModels
         private readonly INavigationService navigationService;
         private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
+
         public LoginViewModel(INavigationService navigationService,
                               IHttpClientService httpClientService,
                               ICryptographyService cryptographyService)
@@ -30,14 +31,28 @@ namespace SmartBusWPF.ViewModels
         public string DriverID
         {
             get => driverID;
-            set => SetProperty(ref driverID, value);
+            set
+            {
+                SetProperty(ref driverID, value);
+                if (LoginCommand != null) 
+                {
+                    LoginCommand.NotifyCanExecuteChanged();
+                }
+            }
         }
 
         private string password;
         public string Password
         {
             get => password;
-            set => SetProperty(ref password, value);
+            set
+            {
+                SetProperty(ref password, value);
+                if (LoginCommand != null)
+                {
+                    LoginCommand.NotifyCanExecuteChanged();
+                }
+            }
         }
 
         private bool isStaySignedIn;
@@ -61,14 +76,41 @@ namespace SmartBusWPF.ViewModels
             set => SetProperty(ref showLoginStatus, value);
         }
 
+        private bool isLoginInProcess;
+        public bool IsLoginInProcess
+        {
+            get => isLoginInProcess;
+            set => SetProperty(ref isLoginInProcess, value);
+        }
+
+        private string loginButtonText;
+        public string LoginButtonText
+        {
+            get => loginButtonText;
+            set => SetProperty(ref loginButtonText, value);
+        }
+
         private void Initialize()
         {
-            LoginCommand = new RelayCommand(Login);
+            LoginCommand = new RelayCommand(Login, CanLogin);
             LogsCommand = new RelayCommand(Logs);
+            IsStaySignedIn = false;
+            ShowLoginStatus = false;
+            IsLoginInProcess = false;
+            LoginButtonText = "LOGIN";
+        }
+
+        private bool CanLogin()
+        {
+            return !string.IsNullOrEmpty(DriverID) && !string.IsNullOrEmpty(Password) && !IsLoginInProcess;
         }
 
         private async void Login()
         {
+            LoginButtonText = "LOGGING IN..";
+            IsLoginInProcess = true;
+            LoginCommand.NotifyCanExecuteChanged();
+          
             LoginDriverDto loginDriverDto = new()
             {
                 DriverID = DriverID,
@@ -76,6 +118,10 @@ namespace SmartBusWPF.ViewModels
             };
 
             HttpResponseModel<string> result = await httpClientService.PostAsync<LoginDriverDto, string>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+
+            LoginButtonText = "LOGIN";
+            IsLoginInProcess = false;
+            LoginCommand.NotifyCanExecuteChanged();
 
             if (result != null && result.IsSuccess)
             {
@@ -86,6 +132,7 @@ namespace SmartBusWPF.ViewModels
                     Properties.Settings.Default.DriverID = cryptographyService.Encrypt(loginDriverDto.DriverID);
                     Properties.Settings.Default.Password = cryptographyService.Encrypt(loginDriverDto.Password);
                 }
+                Properties.Settings.Default.Save();
 
                 App.Current.BusDriverSession = new BusDriverSessionModel()
                 {

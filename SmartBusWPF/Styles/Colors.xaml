@@ -23,6 +23,9 @@
     <!--Border-->
     <SolidColorBrush x:Key="SplitBorderColor" Color="#859BC1"/>
     
+    <!--Disabled-->
+    <SolidColorBrush x:Key="DisabledColor" Color="#191C3D"/>
+
     <!--Primary-->
     <SolidColorBrush x:Key="PrimaryColor" Color="#404AAF"/>
     <SolidColorBrush x:Key="PrimaryHoverColor" Color="#2A3174"/>

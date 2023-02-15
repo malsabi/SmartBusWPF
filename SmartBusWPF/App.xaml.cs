@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Windows;
+using System.Threading;
 using SmartBusWPF.Views;
 using SmartBusWPF.Models;
 using SmartBusWPF.Messages;
@@ -10,7 +11,6 @@ using SmartBusWPF.Common.Enums;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
 
 namespace SmartBusWPF
 {
@@ -20,6 +20,8 @@ namespace SmartBusWPF
         {
             Services = ConfigureServices();
             ConfigureNavigation();
+            SmartBusWPF.Properties.Settings.Default.Reload();
+            InitializeComponent();
         }
 
         #region "Properties"
@@ -75,7 +77,7 @@ namespace SmartBusWPF
             {
                 processMonitorService.TerminateProcess();
             }
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
             processMonitorService.StartProcess();
 
             IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();

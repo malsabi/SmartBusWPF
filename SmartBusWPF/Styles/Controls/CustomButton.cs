@@ -62,6 +62,13 @@ namespace SmartBusWPF.Styles.Controls
             set { SetValue(ImageStretchProperty, value); }
         }
 
+        public static readonly DependencyProperty DisabledColorProperty = DependencyProperty.Register("DisabledColor", typeof(SolidColorBrush), typeof(CustomButton));
+        public Brush DisabledColor
+        {
+            get { return (Brush)GetValue(DisabledColorProperty); }
+            set { SetValue(DisabledColorProperty, value); }
+        }
+
         public static readonly DependencyProperty HoverColorProperty = DependencyProperty.Register("HoverColor", typeof(SolidColorBrush), typeof(CustomButton));
         public Brush HoverColor
         {

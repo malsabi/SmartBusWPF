@@ -42,7 +42,18 @@
                                    Height="50"
                                    CornerRadius="40"
                                    Image="/Assets/Images/User.png"
-                                   Command="{Binding ProfileCommand}"/>
+                                   ContextMenuService.ShowOnDisabled="True"
+                                   ContextMenuService.Placement="Left"                     
+                                   ContextMenuService.HorizontalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" 
+                                   ContextMenuService.VerticalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">>
+                <controls:CustomButton.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Home" Command="{Binding OpenHomeCommand}"/>
+                        <MenuItem Header="Profile" Command="{Binding OpenProfileCommand}"/>
+                        <MenuItem Header="Logout" Command="{Binding LogoutCommand}"/>
+                    </ContextMenu>
+                </controls:CustomButton.ContextMenu>
+            </controls:CustomButton>
         </StackPanel>
 
         <!--Total Students & Student Information-->
@@ -214,7 +225,24 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
-                                       Command="{Binding LogsCommand}"/>
+                                       Command="{Binding OpenLogsCommand}"/>
+
+                <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                        BorderThickness="2"
+                        Margin="10, 10, 0, 0"
+                        Width="1" />
+
+                <controls:CustomButton Content="NOTIFICATIONS"
+                                       Margin="10, 9, 0, 0"
+                                       FontSize="16"
+                                       CornerRadius="0"
+                                       BorderThickness="0"
+                                       BorderBrush="#404AAF"
+                                       Foreground="{DynamicResource VersionColor}"
+                                       Background="Transparent"
+                                       HoverColor="#E0E0E0"
+                                       ClickColor="#BBBBBB"
+                                       Command="{Binding OpenNotificationsCommand}"/>
             </StackPanel>
         </StackPanel>
     </controls:CustomGrid>

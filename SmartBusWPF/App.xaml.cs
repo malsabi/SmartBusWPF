@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Windows;
-using System.Threading;
 using SmartBusWPF.Views;
 using SmartBusWPF.Models;
-using SmartBusWPF.Messages;
 using SmartBusWPF.Commands;
 using SmartBusWPF.ViewModels;
+using System.Windows.Controls;
 using SmartBusWPF.Common.Enums;
-using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,8 +17,6 @@ namespace SmartBusWPF
         public App()
         {
             Services = ConfigureServices();
-            ConfigureNavigation();
-            SmartBusWPF.Properties.Settings.Default.Reload();
             InitializeComponent();
         }
 
@@ -39,30 +35,58 @@ namespace SmartBusWPF
         /// Gets or sets the <see cref="BusDriverSessionModel"/> instance.
         /// </summary>
         public BusDriverSessionModel BusDriverSession { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="LoggerService"/> instance.
+        /// </summary>
+        public ILoggerService LoggerService { get; private set; }
         #endregion
 
         #region "Private Methods"
         /// <summary>
         /// Configures the services for the application.
         /// </summary>
-        private static IServiceProvider ConfigureServices()
+        private IServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
-            services.AddServices();
-            services.AddViewModels();
-            return services.BuildServiceProvider();
-        }
+            ServiceCollection services = new();
+            {
+                services.AddServices();
+                services.AddViewModels();
+            }
+         
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            {
+                LoggerService = serviceProvider.GetService<ILoggerService>();
 
-        /// <summary>
-        /// Configures the navigation service.
-        /// </summary>
-        private void ConfigureNavigation()
-        {
-            INavigationService navigationService = Services.GetService<INavigationService>();
-            navigationService.RegisterView(typeof(LoginViewModel), new LoginPage());
-            navigationService.RegisterView(typeof(HomeViewModel), new HomePage());
-            navigationService.RegisterView(typeof(TripViewModel), new TripPage());
-            navigationService.RegisterView(typeof(LogsViewModel), new LogsPage());
+                INavigationService navigationService = serviceProvider.GetService<INavigationService>();
+                navigationService.RegisterView(typeof(LoginViewModel), typeof(LoginPage));
+                navigationService.RegisterView(typeof(HomeViewModel), typeof(HomePage));
+                navigationService.RegisterView(typeof(TripViewModel), typeof(TripPage));
+                navigationService.RegisterView(typeof(LogsViewModel), typeof(LogsPage));
+                navigationService.RegisterView(typeof(NotificationsViewModel), typeof(NotificationsPage));
+                navigationService.RegisterView(typeof(ProfileViewModel), typeof(ProfilePage));
+
+                IProcessMonitorService processMonitorService = serviceProvider.GetService<IProcessMonitorService>();
+                processMonitorService.OnException += OnProcessMonitorExceptionHandler;
+
+                if (processMonitorService.IsProcessRunning())
+                {
+                    processMonitorService.TerminateProcess();
+                }
+                processMonitorService.StartProcess();
+
+                IServerSocketService serverSocketService = serviceProvider.GetService<IServerSocketService>();
+                serverSocketService.OnServerStartedListening += OnServerStartedListeningHandler;
+                serverSocketService.OnServerStoppedListening += OnServerStoppedListeningHandler;
+                serverSocketService.OnClientConnected += OnClientConnectedHandler;
+                serverSocketService.OnClientMessageSent += OnClientMessageSentHandler;
+                serverSocketService.OnClientMessageReceived += OnClientMessageReceivedHandler;
+                serverSocketService.OnClientDisconnected += OnClientDisconnectedHandler;
+                serverSocketService.OnClientException += OnClientExceptionHandler;
+                serverSocketService.StartListening(1669);
+                serverSocketService.AcceptClientAsync();
+            }
+            return serviceProvider;
         }
 
         /// <summary>
@@ -70,78 +94,76 @@ namespace SmartBusWPF
         /// </summary>
         protected override void OnStartup(StartupEventArgs e)
         {
-            IProcessMonitorService processMonitorService = Services.GetService<IProcessMonitorService>();
-            processMonitorService.OnException += OnProcessMonitorExceptionHandler;
-
-            if (processMonitorService.IsProcessRunning())
+            Frame navigationFrame = new()
             {
-                processMonitorService.TerminateProcess();
-            }
-            Thread.Sleep(2000);
-            processMonitorService.StartProcess();
+                NavigationUIVisibility = System.Windows.Navigation.NavigationUIVisibility.Hidden
+            };
 
-            IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();
-            serverSocketService.OnServerStartedListening += OnServerStartedListeningHandler;
-            serverSocketService.OnServerStoppedListening += OnServerStoppedListeningHandler;
-            serverSocketService.OnClientConnected += OnClientConnectedHandler;
-            serverSocketService.OnClientMessageSent += OnClientMessageSentHandler;
-            serverSocketService.OnClientMessageReceived += OnClientMessageReceivedHandler;
-            serverSocketService.OnClientDisconnected += OnClientDisconnectedHandler;
-            serverSocketService.OnClientException += OnClientExceptionHandler;
-            serverSocketService.StartListening(1669);
-            serverSocketService.AcceptClientAsync();
+            INavigationService navigationService = Services.GetService<INavigationService>();
+            navigationService.SetCurrentFrame(navigationFrame);
 
-            MainWindow = new MainWindow();
+            MainWindow = new MainWindow()
+            {
+                DataContext = Services.GetService<MainWindowViewModel>(),
+                Content = navigationFrame
+            };
             MainWindow.Show();
 
             base.OnStartup(e);
         }
 
-
-        #endregion
-
-        #region "Public Methods"
-        public void Log(LogLevel logLevel, string source, string message)
+        /// <summary>
+        /// Represents an event when the application exists.
+        /// </summary>
+        protected override void OnExit(ExitEventArgs e)
         {
-            Dispatcher.Invoke(delegate
+            IServerSocketService serverSocketService = Services.GetService<IServerSocketService>();
+            serverSocketService.OnServerStartedListening -= OnServerStartedListeningHandler;
+            serverSocketService.OnServerStoppedListening -= OnServerStoppedListeningHandler;
+            serverSocketService.OnClientConnected -= OnClientConnectedHandler;
+            serverSocketService.OnClientMessageSent -= OnClientMessageSentHandler;
+            serverSocketService.OnClientMessageReceived -= OnClientMessageReceivedHandler;
+            serverSocketService.OnClientDisconnected -= OnClientDisconnectedHandler;
+            serverSocketService.OnClientException -= OnClientExceptionHandler;
+            serverSocketService.StopListening();
+
+            IProcessMonitorService processMonitorService = Services.GetService<IProcessMonitorService>();
+            processMonitorService.OnException -= OnProcessMonitorExceptionHandler;
+
+            if (processMonitorService.IsProcessRunning())
             {
-                WeakReferenceMessenger.Default.Send(new LogMessage(new LogModel()
-                {
-                    Timestamp = DateTime.Now,
-                    LogLevel = logLevel,
-                    Source = source,
-                    Message = message
-                }));
-            });
+                processMonitorService.TerminateProcess();
+            }
+            base.OnExit(e);
         }
         #endregion
 
         #region "Event Handlers"
         private void OnProcessMonitorExceptionHandler(Exception ex)
         {
-            Log(LogLevel.Error, "ProcessMonitor", ex.Message);
+            LoggerService.Log(LogLevel.Error, "ProcessMonitor", ex.Message);
         }
 
         private void OnServerStartedListeningHandler(IPEndPoint endPoint)
         {
-            Log(LogLevel.Info, "Server", $"Server started listening on {endPoint.Address}:{endPoint.Port}");
+            LoggerService.Log(LogLevel.Info, "Server", $"Server started listening on {endPoint.Address}:{endPoint.Port}");
         }
 
         private void OnServerStoppedListeningHandler()
         {
-            Log(LogLevel.Info, "Server", "Server stopped listening");
+            LoggerService.Log(LogLevel.Info, "Server", "Server stopped listening");
         }
 
         private async void OnClientConnectedHandler(IClientSocketService client)
         {
-            Log(LogLevel.Info, "Client", $"Client [{client.EndPoint}] Connected Successfully");
+            LoggerService.Log(LogLevel.Info, "Client", $"Client [{client.EndPoint}] Connected Successfully");
             await client.SendAsync(AppCommands.OPEN_HUSKY_LENS_COMMAND, "SmartBus.HuskyLens");
             await client.SendAsync(AppCommands.START_WORKER_COMMAND, "SmartBus.HuskyLens");
         }
 
         private void OnClientMessageSentHandler(IClientSocketService client, string command, string content)
         {
-            Log(LogLevel.Info, "Client", $"Client [{client.EndPoint}] Sent [Command: {command}, Content: {content}]");
+            LoggerService.Log(LogLevel.Info, "Client", $"Client [{client.EndPoint}] Sent [Command: {command}, Content: {content}]");
         }
         
         private void OnClientMessageReceivedHandler(IClientSocketService client, string command, string content)
@@ -149,23 +171,23 @@ namespace SmartBusWPF
             switch (command)
             {
                 case AppCommands.LOG_MESSAGE_COMMAND:
-                    Log(LogLevel.Info, "Python", content);
+                    LoggerService.Log(LogLevel.Info, "Python", content);
                     break;
 
                 case AppCommands.DETECTED_IMAGE_COMMAND:
-                    Log(LogLevel.Info, "Python", content);
+                    LoggerService.Log(LogLevel.Info, "Python", content);
                     break;
             }
         }
 
         private void OnClientDisconnectedHandler(IClientSocketService client)
         {
-            Log(LogLevel.Warning, "Client", $"Client [{client.EndPoint}] Disconnected");
+            LoggerService.Log(LogLevel.Warning, "Client", $"Client [{client.EndPoint}] Disconnected");
         }
         
         private void OnClientExceptionHandler(IClientSocketService client, Exception ex)
         {
-            Log(LogLevel.Error, "Client", $"Client [{client.EndPoint}] Exception: [{ex.Message}]");
+            LoggerService.Log(LogLevel.Error, "Client", $"Client [{client.EndPoint}] Exception: [{ex.Message}]");
         }
         #endregion
     }

@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/CheckBoxStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/ListViewStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/ContextMenuStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -11,9 +11,9 @@
         MinHeight="650"
         MinWidth="950">
     <Grid>
-        <Frame x:Name="NavigationFrame"
+        <!--<Frame x:Name="NavigationFrame"
                NavigationUIVisibility="Hidden"
                Background="Black">
-        </Frame>
+        </Frame>-->
     </Grid>
 </Window>

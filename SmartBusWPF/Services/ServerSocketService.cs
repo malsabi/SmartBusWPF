@@ -77,9 +77,15 @@ namespace SmartBusWPF.Services
             {
                 while (IsListening)
                 {
-                    Socket clientHandler = await Listener.AcceptSocketAsync();
-                    ClientSocketService clientSocket = new(clientHandler, true, false, false, 1024 * 16);
-                    AddClient(clientSocket);
+                    try
+                    {
+                        Socket clientHandler = await Listener.AcceptSocketAsync();
+                        ClientSocketService clientSocket = new(clientHandler, true, false, false, 1024 * 16);
+                        AddClient(clientSocket);
+                    }
+                    catch
+                    {
+                    }
                 }
             });
         }

@@ -1,14 +1,13 @@
-﻿<Page x:Class="SmartBusWPF.Views.HomePage"
+﻿<Page x:Class="SmartBusWPF.Views.ProfilePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SmartBusWPF.Views"
+      xmlns:local="clr-namespace:SmartBusWPF.Views" 
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="950"
-      Title="HomePage"
-      ShowsNavigationUI="False">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProfilePage">
 
     <controls:CustomGrid>
         <Image Grid.Row="0"
@@ -19,7 +18,6 @@
                MaxHeight="250"
                Margin="20, 25, 0, 0"
                Source="/Assets/Images/Logo.png"/>
-
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="3"
@@ -53,27 +51,89 @@
             </controls:CustomButton>
         </StackPanel>
 
-        <controls:CustomButton Grid.Row="1"
-                               Grid.Column="1"
-                               Width="200"
-                               Height="200"
-                               CornerRadius="30"
-                               BorderThickness="3"
-                               BorderBrush="#404AAF"
-                               Foreground="Black"
-                               Background="Transparent"
-                               HoverColor="#E0E0E0"
-                               ClickColor="#BBBBBB"
-                               FontSize="20"
-                               FontWeight="DemiBold"
-                               Content="START TRIP"
-                               ContentMargin="0, 0, 0, 15"
-                               VerticalContentAlignment="Bottom"
-                               Image="/Assets/Images/Start.png"
-                               ImageWidth="60"
-                               ImageHeight="60"
-                               Command="{Binding StartTripCommand}"/>
+        <StackPanel Grid.RowSpan="2"
+                    Grid.ColumnSpan="3"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="500"
+                    Margin="0, 100, 0, 0">
 
+            <TextBlock Text="Profile View"
+                       Margin="0, 0, 0, 20"
+                       Style="{DynamicResource UserProfileTextBlock}" />
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="0, 0, 0, 1"
+                    Margin="0, 0, 0, 20">
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="Full Name" 
+                               Margin="0, 5, 100, 5"
+                               Style="{DynamicResource DataLabelTextBlock}"/>
+                    <TextBlock Text="{Binding FullName}" 
+                               Margin="0, 5, 0, 5"
+                               Style="{DynamicResource DataInputTextBlock}"/>
+                </WrapPanel>
+            </Border>
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="0, 0, 0, 1"
+                    Margin="0, 0, 0, 20">
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="Email" 
+                               Margin="0, 5, 137, 5"
+                               Style="{DynamicResource DataLabelTextBlock}"/>
+                    <TextBlock Text="{Binding Email}" 
+                               Margin="0, 5, 0, 5"
+                               Style="{DynamicResource DataInputTextBlock}"/>
+                </WrapPanel>
+            </Border>
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="0, 0, 0, 1"
+                    Margin="0, 0, 0, 20">
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="Driver ID" 
+                               Margin="0, 5, 110, 5"
+                               Style="{DynamicResource DataLabelTextBlock}"/>
+                    <TextBlock Text="{Binding DriverID}"
+                               Margin="0, 5, 0, 5"
+                               Style="{DynamicResource DataInputTextBlock}"/>
+                </WrapPanel>
+            </Border>
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="0, 0, 0, 1"
+                    Margin="0, 0, 0, 20">
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="Phone Number"
+                               Margin="0, 5, 61, 5"
+                               Style="{DynamicResource DataLabelTextBlock}"/>
+                    <TextBlock Text="{Binding PhoneNumber}" 
+                               Margin="0, 5, 0, 5"
+                               Style="{DynamicResource DataInputTextBlock}"/>
+                </WrapPanel>
+            </Border>
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="0, 0, 0, 1"
+                    Margin="0, 0, 0, 20">
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="Country" 
+                               Margin="0, 5, 116, 5"
+                               Style="{DynamicResource DataLabelTextBlock}"/>
+                    <TextBlock Text="{Binding Country}" 
+                               Margin="0, 5, 0, 5"
+                               Style="{DynamicResource DataInputTextBlock}"/>
+                </WrapPanel>
+            </Border>
+        </StackPanel>
+        
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
                     Orientation="Vertical">
@@ -83,7 +143,7 @@
                     Height="1" />
 
             <StackPanel Orientation="Horizontal">
-                
+
                 <TextBlock Text="Version 1.0.0.0"
                            Margin="10, 10, 0, 0"
                            Style="{DynamicResource VersionTextBlock}"/>

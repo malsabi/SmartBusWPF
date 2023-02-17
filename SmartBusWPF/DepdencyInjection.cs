@@ -9,16 +9,19 @@ namespace SmartBusWPF
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services)
         {
-            services.AddTransient(typeof(MainWindowViewModel));
-            services.AddTransient(typeof(LoginViewModel));
-            services.AddTransient(typeof(HomeViewModel));
-            services.AddTransient(typeof(TripViewModel));
-            services.AddTransient(typeof(LogsViewModel));
+            services.AddSingleton(typeof(MainWindowViewModel));
+            services.AddSingleton(typeof(LoginViewModel));
+            services.AddSingleton(typeof(HomeViewModel));
+            services.AddSingleton(typeof(TripViewModel));
+            services.AddSingleton(typeof(LogsViewModel));
+            services.AddSingleton(typeof(NotificationsViewModel));
+            services.AddSingleton(typeof(ProfileViewModel));
             return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddSingleton<ILoggerService, LoggerService>();
             services.AddSingleton<IProcessMonitorService, ProcessMonitorService>();
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IServerSocketService, ServerSocketService>();

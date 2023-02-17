@@ -115,7 +115,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
-                                       Command="{Binding LogsCommand}"/>
+                                       Command="{Binding OpenLogsCommand}"/>
             </StackPanel>
         </StackPanel>
     </controls:CustomGrid>

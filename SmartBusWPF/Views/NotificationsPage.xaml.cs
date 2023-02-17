@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartBusWPF.Views
 {
-    public partial class HomePage : Page
+    public partial class NotificationsPage : Page
     {
-        public HomePage()
+        public NotificationsPage()
         {
+            DataContext = App.Current.Services.GetService<NotificationsViewModel>();
             InitializeComponent();
-            DataContext = App.Current.Services.GetService<HomeViewModel>();
         }
     }
 }

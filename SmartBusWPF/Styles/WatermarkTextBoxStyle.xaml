@@ -79,12 +79,6 @@
                                        VerticalAlignment="Center"
                                        Margin="45, 0, 0, 0"
                                        Style="{DynamicResource WatermarkTextBlock}">
-                                <!--<TextBlock.Visibility>
-                                    <MultiBinding Converter="{StaticResource BoolToVisibilityMultiConverter}">
-                                        <Binding ElementName="InputText" Path="Password.Length"/>
-                                        <Binding ElementName="InputText" Path="IsFocused" />
-                                    </MultiBinding>
-                                </TextBlock.Visibility>-->
                             </TextBlock>
 
                             <PasswordBox x:Name="InputText"

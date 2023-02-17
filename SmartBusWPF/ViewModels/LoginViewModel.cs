@@ -2,12 +2,11 @@
 using SmartBusWPF.Common.Consts;
 using CommunityToolkit.Mvvm.Input;
 using SmartBusWPF.DTOs.Auth.Login;
-using CommunityToolkit.Mvvm.ComponentModel;
 using SmartBusWPF.Common.Interfaces.Services;
 
 namespace SmartBusWPF.ViewModels
 {
-    public class LoginViewModel : ObservableObject
+    public class LoginViewModel : BaseViewModel
     {
         private readonly INavigationService navigationService;
         private readonly IHttpClientService httpClientService;
@@ -15,7 +14,7 @@ namespace SmartBusWPF.ViewModels
 
         public LoginViewModel(INavigationService navigationService,
                               IHttpClientService httpClientService,
-                              ICryptographyService cryptographyService)
+                              ICryptographyService cryptographyService) : base(navigationService)
         {
             this.navigationService = navigationService;
             this.httpClientService = httpClientService;
@@ -24,8 +23,6 @@ namespace SmartBusWPF.ViewModels
         }
 
         public IRelayCommand LoginCommand { get; private set; }
-
-        public IRelayCommand LogsCommand { get; private set; }
 
         private string driverID;
         public string DriverID
@@ -93,7 +90,6 @@ namespace SmartBusWPF.ViewModels
         private void Initialize()
         {
             LoginCommand = new RelayCommand(Login, CanLogin);
-            LogsCommand = new RelayCommand(Logs);
             IsStaySignedIn = false;
             ShowLoginStatus = false;
             IsLoginInProcess = false;
@@ -117,7 +113,7 @@ namespace SmartBusWPF.ViewModels
                 Password = Password
             };
 
-            HttpResponseModel<string> result = await httpClientService.PostAsync<LoginDriverDto, string>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+            HttpResponseModel<LoginDriverResponseDto> result = await httpClientService.PostAsync<LoginDriverDto, LoginDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
 
             LoginButtonText = "LOGIN";
             IsLoginInProcess = false;
@@ -138,8 +134,15 @@ namespace SmartBusWPF.ViewModels
                 {
                     BusDriver = new BusDriverModel()
                     {
+                        ID = result.Response.ID,
+                        FirstName = result.Response.FirstName,
+                        LastName = result.Response.LastName,
+                        Email = result.Response.Email,
+                        DriverID = result.Response.DriverID,
+                        PhoneNumber = result.Response.PhoneNumber,
+                        Country = result.Response.Country
                     },
-                    AuthToken = result.Response,
+                    AuthToken = result.Response.Token,
                     IsActive = true
                 };
                 navigationService.Navigate<HomeViewModel>();
@@ -156,11 +159,6 @@ namespace SmartBusWPF.ViewModels
                 }
                 ShowLoginStatus = true;
             }
-        }
-
-        private void Logs()
-        {
-            navigationService.Navigate<LogsViewModel>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using SmartBusWPF.Common.Interfaces.Services;
@@ -8,87 +7,58 @@ namespace SmartBusWPF.Services
 {
     public class NavigationService : INavigationService
     {
-        #region "Fields"
         private Frame currentFrame;
-        private Dictionary<Type, Page> viewMapping;
-        #endregion
+        private readonly Dictionary<Type, Type> viewMapping;
 
-        #region "Properties"
-        public Frame CurrentFrame
-        {
-            get
-            {
-                return currentFrame;
-            }
-        }
-
-        public bool CanGoBack
-        {
-            get
-            {
-                return CurrentFrame != null && CurrentFrame.CanGoBack;
-            }
-        }
-
-        public IReadOnlyDictionary<Type, Page> ViewMapping
-        {
-            get
-            {
-                return viewMapping ?? null;
-            }
-        }
-        #endregion
-
-        #region "Constructors / Destructors"
         public NavigationService()
         {
-            Initialize();
-        }
-        public NavigationService(Frame currentFrame)
-        {
-            this.currentFrame = currentFrame;
-            Initialize();
+            viewMapping = new Dictionary<Type, Type>();
         }
 
         ~NavigationService()
         {
             UnregisterAll();
         }
-        #endregion
 
-        #region "Initialization"
-        private void Initialize()
+        public bool CanGoBack
         {
-            viewMapping = new Dictionary<Type, Page>();
-        }
-        #endregion
-
-        #region "Navigation"
-        public void RegisterView(Type ViewModelType, Page PageView)
-        {
-            if (viewMapping != null && !viewMapping.ContainsKey(ViewModelType))
+            get
             {
-                viewMapping.Add(ViewModelType, PageView);
+                return currentFrame != null && currentFrame.CanGoBack;
             }
         }
 
-        public void Unregister(Type ViewModelType)
+        public IReadOnlyDictionary<Type, Type> ViewMapping
         {
-            if (viewMapping != null && viewMapping.ContainsKey(ViewModelType))
+            get
             {
-                viewMapping.Remove(ViewModelType);
+                return viewMapping ?? null;
+            }
+        }
+
+        public void RegisterView(Type viewModelType, Type pageType)
+        {
+            if (viewMapping.ContainsKey(viewModelType))
+            {
+                viewMapping[viewModelType] = pageType;
+            }
+            else
+            {
+                viewMapping.Add(viewModelType, pageType);
+            }
+        }
+
+        public void Unregister(Type viewModelType)
+        {
+            if (viewMapping.ContainsKey(viewModelType))
+            {
+                viewMapping.Remove(viewModelType);
             }
         }
 
         public void UnregisterAll()
         {
-            if (viewMapping != null)
-            {
-                foreach (Type ViewModelType in viewMapping.Keys.ToArray())
-                {
-                    viewMapping.Remove(ViewModelType);
-                }
-            }
+            viewMapping.Clear();
         }
 
         public void SetCurrentFrame(Frame currentFrame)
@@ -98,13 +68,28 @@ namespace SmartBusWPF.Services
 
         public void GoBack()
         {
-            CurrentFrame.GoBack();
+            currentFrame.GoBack();
         }
 
         public void Navigate<ViewModelType>(object args = null)
         {
-            CurrentFrame.Navigate(viewMapping[typeof(ViewModelType)], args);
+            Type viewModelType = typeof(ViewModelType);
+            Type pageType = viewMapping[viewModelType];
+
+            if (pageType == null)
+            {
+                throw new ArgumentException($"No view is registered for ViewModelType '{viewModelType.FullName}'");
+            }
+
+            if (Activator.CreateInstance(pageType) is not Page page)
+            {
+                throw new ArgumentException($"Registered pageType for ViewModelType '{viewModelType.FullName}' is not a Page");
+            }
+            if (currentFrame == null)
+            {
+                throw new InvalidOperationException("CurrentFrame is not set");
+            }
+            currentFrame.Navigate(page, args);
         }
-        #endregion
     }
 }

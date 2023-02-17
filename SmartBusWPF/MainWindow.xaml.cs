@@ -1,7 +1,4 @@
 ﻿using System.Windows;
-using SmartBusWPF.ViewModels;
-using SmartBusWPF.Common.Interfaces.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartBusWPF
 {
@@ -10,8 +7,8 @@ namespace SmartBusWPF
         public MainWindow()
         {
             InitializeComponent();
-            App.Current.Services.GetService<INavigationService>().SetCurrentFrame(NavigationFrame);
-            DataContext = App.Current.Services.GetService<MainWindowViewModel>();
+            //App.Current.Services.GetService<INavigationService>().SetCurrentFrame(NavigationFrame);
+            //DataContext = App.Current.Services.GetService<MainWindowViewModel>();
         }
     }
 }

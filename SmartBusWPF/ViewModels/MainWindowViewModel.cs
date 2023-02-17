@@ -33,13 +33,13 @@ namespace SmartBusWPF.ViewModels
                 driverID = cryptographyService.Decrypt(driverID);
                 password = cryptographyService.Decrypt(password);
 
-                LoginDriverDto loginDriverDto = new LoginDriverDto()
+                LoginDriverDto loginDriverDto = new()
                 {
                     DriverID = driverID,
                     Password = password,
                 };
 
-                HttpResponseModel<string> result = await httpClientService.PostAsync<LoginDriverDto, string>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+                HttpResponseModel<LoginDriverResponseDto> result = await httpClientService.PostAsync<LoginDriverDto, LoginDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
 
                 if (result == null || !result.IsSuccess)
                 {
@@ -51,8 +51,15 @@ namespace SmartBusWPF.ViewModels
                     {
                         BusDriver = new BusDriverModel()
                         {
+                            ID = result.Response.ID,
+                            FirstName = result.Response.FirstName,
+                            LastName = result.Response.LastName,
+                            Email = result.Response.Email,
+                            DriverID = result.Response.DriverID,
+                            PhoneNumber = result.Response.PhoneNumber,
+                            Country = result.Response.Country
                         },
-                        AuthToken = result.Response,
+                        AuthToken = result.Response.Token,
                         IsActive = true
                     };
                     navigationService.Navigate<HomeViewModel>();

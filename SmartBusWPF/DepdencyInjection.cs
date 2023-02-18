@@ -1,5 +1,6 @@
 ﻿using SmartBusWPF.Services;
 using SmartBusWPF.ViewModels;
+using SmartBusWPF.Common.Consts;
 using SmartBusWPF.Common.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,7 @@ namespace SmartBusWPF
             services.AddSingleton<IClientSocketService, ClientSocketService>();
             services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IBusNotificationService>(new BusNotificationService(APIConsts.NotificationHubEndPoint));
             return services;
         }
     }

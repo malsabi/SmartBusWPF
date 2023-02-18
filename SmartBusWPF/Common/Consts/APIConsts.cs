@@ -6,6 +6,8 @@
 
         public const string ProductionAPIEndPoint = "https://localhost:7145";
 
+        public const string NotificationHubEndPoint = LocalAPIEndPoint + "/notification_hub";
+
         public const string Scheme = "Bearer";
 
         public static class Auth

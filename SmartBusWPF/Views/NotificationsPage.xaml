@@ -4,11 +4,114 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SmartBusWPF.Views"
+      xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NotificationsPage">
 
-    <Grid>
+    <controls:CustomGrid>
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               MaxWidth="250"
+               MaxHeight="250"
+               Margin="20, 25, 0, 0"
+               Source="/Assets/Images/Logo.png"/>
 
-    </Grid>
+
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0, 25, 20, 0">
+
+            <TextBlock Text="Welcome Mohammed"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Margin="0, 0, 0, 0"
+                       Padding="0, 0, 5, 0"
+                       Style="{DynamicResource WelcomeTextBlock}" />
+
+            <controls:CustomButton Width="50"
+                                   Height="50"
+                                   CornerRadius="40"
+                                   Image="/Assets/Images/User.png"
+                                   ContextMenuService.ShowOnDisabled="True"
+                                   ContextMenuService.Placement="Left"                     
+                                   ContextMenuService.HorizontalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" 
+                                   ContextMenuService.VerticalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">>
+                <controls:CustomButton.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Home" Command="{Binding OpenHomeCommand}"/>
+                        <MenuItem Header="Profile" Command="{Binding OpenProfileCommand}"/>
+                        <MenuItem Header="Logout" Command="{Binding LogoutCommand}"/>
+                    </ContextMenu>
+                </controls:CustomButton.ContextMenu>
+            </controls:CustomButton>
+        </StackPanel>
+
+        <ListView Grid.RowSpan="2"
+                  Grid.ColumnSpan="3"
+                  x:Name="UsersListview"
+                  Foreground="white"
+                  Background="#27283C"
+                  Style="{DynamicResource CustomListviewStyle}"
+                  ItemContainerStyle="{DynamicResource CustomListviewItemStyle}"
+                  BorderThickness="0"
+                  BorderBrush="#838383"
+                  Margin="0, 110, 0, 0"
+                  ItemsSource="{Binding Notifications}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{DynamicResource CustomColumnHeaderStyle}">
+                    <GridViewColumn Header = "ID" 
+                                    Width="80"
+                                    DisplayMemberBinding="{Binding ID}" />
+                    <GridViewColumn Header = "Title" 
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header = "Message" 
+                                    Width="300" 
+                                    DisplayMemberBinding="{Binding Message}" />
+                    <GridViewColumn Header = "DateAndTime" 
+                                    Width="220" 
+                                    DisplayMemberBinding="{Binding DateAndTime}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    Orientation="Vertical">
+
+            <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                    BorderThickness="2"
+                    Height="1" />
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBlock Text="Version 1.0.0.0"
+                           Margin="10, 10, 0, 0"
+                           Style="{DynamicResource VersionTextBlock}"/>
+
+                <Border BorderBrush="{DynamicResource SplitBorderColor}"
+                        BorderThickness="2"
+                        Margin="10, 10, 0, 0"
+                        Width="1" />
+
+                <controls:CustomButton Content="LOGS"
+                                       Margin="10, 9, 0, 0"
+                                       FontSize="16"
+                                       CornerRadius="0"
+                                       BorderThickness="0"
+                                       BorderBrush="#404AAF"
+                                       Foreground="{DynamicResource VersionColor}"
+                                       Background="Transparent"
+                                       HoverColor="#E0E0E0"
+                                       ClickColor="#BBBBBB"
+                                       Command="{Binding OpenLogsCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </controls:CustomGrid>
 </Page>

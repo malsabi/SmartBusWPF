@@ -1,12 +1,11 @@
 ﻿using SmartBusWPF.Models;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using SmartBusWPF.Common.Interfaces.Services;
 
 namespace SmartBusWPF.ViewModels
 {
-    public class TripViewModel : ObservableObject
+    public class TripViewModel : BaseViewModel
     {
         private readonly INavigationService navigationService;
 
@@ -19,13 +18,10 @@ namespace SmartBusWPF.ViewModels
 
         public ObservableCollection<StudentModel> Students { get; private set; }
 
-        public IRelayCommand ProfileCommand { get; private set; }
-
         public IRelayCommand StartTripCommand { get; private set; }
 
-        public IRelayCommand LogsCommand { get; private set; }
 
-        public TripViewModel(INavigationService navigationService)
+        public TripViewModel(INavigationService navigationService) : base(navigationService)
         {
             this.navigationService = navigationService;
             Initialize();
@@ -34,24 +30,12 @@ namespace SmartBusWPF.ViewModels
         private void Initialize()
         {
             Students = new ObservableCollection<StudentModel>();
-            ProfileCommand = new RelayCommand(Profile);
             StartTripCommand = new RelayCommand(StartTrip);
-            LogsCommand = new RelayCommand(Logs);
-        }
-
-        private void Profile()
-        {
-            navigationService.Navigate<LoginViewModel>();
         }
 
         private void StartTrip()
         {
             navigationService.Navigate<TripViewModel>();
-        }
-
-        private void Logs()
-        {
-            navigationService.Navigate<LogsViewModel>();
         }
     }
 }

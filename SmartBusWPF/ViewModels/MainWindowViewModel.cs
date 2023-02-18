@@ -59,6 +59,13 @@ namespace SmartBusWPF.ViewModels
                             PhoneNumber = result.Response.PhoneNumber,
                             Country = result.Response.Country
                         },
+                        Bus = new BusModel()
+                        {
+                            ID = result.Response.BusDto.ID,
+                            BusNumber = result.Response.BusDto.BusNumber,
+                            CurrentLocation = result.Response.BusDto.CurrentLocation,
+                            Capacity = result.Response.BusDto.Capacity
+                        },
                         AuthToken = result.Response.Token,
                         IsActive = true
                     };

@@ -1,5 +1,5 @@
-﻿using SmartBusWPF.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using SmartBusWPF.Models.Notification;
 using SmartBusWPF.Common.Interfaces.Services;
 
 namespace SmartBusWPF.ViewModels

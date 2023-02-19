@@ -1,7 +1,7 @@
 ﻿using System;
 using SmartBusWPF.Common.Enums;
 
-namespace SmartBusWPF.Models
+namespace SmartBusWPF.Models.Logging
 {
     public class LogModel
     {

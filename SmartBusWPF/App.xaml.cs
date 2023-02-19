@@ -2,9 +2,9 @@
 using System.Net;
 using System.Windows;
 using SmartBusWPF.Views;
-using SmartBusWPF.Models;
 using SmartBusWPF.Commands;
 using SmartBusWPF.ViewModels;
+using SmartBusWPF.Models.Bus;
 using System.Windows.Controls;
 using SmartBusWPF.Common.Enums;
 using SmartBusWPF.Common.Interfaces.Services;

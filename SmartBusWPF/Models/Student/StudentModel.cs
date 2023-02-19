@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SmartBusWPF.Models
+namespace SmartBusWPF.Models.Student
 {
     public class StudentModel : ObservableObject
     {

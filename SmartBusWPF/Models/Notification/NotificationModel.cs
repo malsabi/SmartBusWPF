@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartBusWPF.Models
+namespace SmartBusWPF.Models.Notification
 {
     public class NotificationModel
     {

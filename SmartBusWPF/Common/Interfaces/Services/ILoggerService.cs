@@ -1,6 +1,6 @@
-﻿using SmartBusWPF.Models;
-using SmartBusWPF.Common.Enums;
+﻿using SmartBusWPF.Common.Enums;
 using System.Collections.Generic;
+using SmartBusWPF.Models.Logging;
 
 namespace SmartBusWPF.Common.Interfaces.Services
 {

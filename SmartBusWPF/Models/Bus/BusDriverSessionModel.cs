@@ -1,4 +1,4 @@
-﻿namespace SmartBusWPF.Models
+﻿namespace SmartBusWPF.Models.Bus
 {
     public class BusDriverSessionModel
     {

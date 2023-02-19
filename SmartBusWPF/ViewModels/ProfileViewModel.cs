@@ -1,4 +1,4 @@
-﻿using SmartBusWPF.Models;
+﻿using SmartBusWPF.Models.Bus;
 using SmartBusWPF.Common.Interfaces.Services;
 
 namespace SmartBusWPF.ViewModels

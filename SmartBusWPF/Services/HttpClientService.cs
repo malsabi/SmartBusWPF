@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
-using SmartBusWPF.Models;
 using System.Net.Http.Json;
+using SmartBusWPF.Models.API;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using SmartBusWPF.Common.Consts;

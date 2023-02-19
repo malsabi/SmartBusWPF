@@ -1,4 +1,4 @@
-﻿using SmartBusWPF.Models;
+﻿using SmartBusWPF.Models.Student;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using SmartBusWPF.Common.Interfaces.Services;

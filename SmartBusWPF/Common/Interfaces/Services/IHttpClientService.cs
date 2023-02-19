@@ -1,4 +1,4 @@
-﻿using SmartBusWPF.Models;
+﻿using SmartBusWPF.Models.API;
 using System.Threading.Tasks;
 
 namespace SmartBusWPF.Common.Interfaces.Services

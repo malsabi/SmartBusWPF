@@ -1,4 +1,4 @@
-﻿using SmartBusWPF.Models;
+﻿using SmartBusWPF.Models.API;
 using SmartBusWPF.Common.Consts;
 using SmartBusWPF.DTOs.Auth.Login;
 using CommunityToolkit.Mvvm.ComponentModel;

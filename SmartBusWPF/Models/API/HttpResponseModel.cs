@@ -1,4 +1,4 @@
-﻿namespace SmartBusWPF.Models
+﻿namespace SmartBusWPF.Models.API
 {
     public class HttpResponseModel<TResponse>
     {

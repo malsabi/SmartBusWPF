@@ -109,13 +109,14 @@
                        Margin="10, 0, 0, 0"
                        Background="{DynamicResource SecondaryColor}">
 
-                <DockPanel DockPanel.Dock="Top">
-                    <TextBlock DockPanel.Dock="Top"
-                                Text="Student Information"
-                                HorizontalAlignment="Left"
-                                Margin="10, 10, 0, 0"
-                                Style="{DynamicResource TotalStudentsTextBlock}"/>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="Student Information"
+                           HorizontalAlignment="Left"
+                           Margin="10, 10, 0, 0"
+                           Style="{DynamicResource TotalStudentsTextBlock}"/>
 
+                <DockPanel DockPanel.Dock="Top">
+                    
                     <Border DockPanel.Dock="Left"
                             Background="#D9DBF0"
                             Width="250"
@@ -128,7 +129,7 @@
                                 Height="150"/>
                     </Border>
 
-                    <StackPanel DockPanel.Dock="Left"
+                    <StackPanel DockPanel.Dock="Right"
                                 Orientation="Vertical"
                                 Margin="0, 0, 10, 0"
                                 VerticalAlignment="Center"
@@ -140,7 +141,7 @@
                             <Image Source="/Assets/Images/UserInfo.png"
                                     Width="34"
                                     Height="34"/>
-                            <TextBlock Text="First, Last Name"
+                            <TextBlock Text="Full Name"
                                         VerticalAlignment="Center"
                                         Margin="10, 0, 0, 0"
                                         Style="{DynamicResource StudentInfoTextBlock}"/>
@@ -174,15 +175,27 @@
                                     Margin="30, 30, 20, 30">
 
                             <Image Source="/Assets/Images/UserSchool.png"
-                                    Width="34"
-                                    Height="34"/>
-                            <TextBlock Text="Grade, Section"
-                                        VerticalAlignment="Center"
-                                        Margin="10, 0, 0, 0"
-                                        Style="{DynamicResource StudentInfoTextBlock}"/>
+                                   Width="34"
+                                   Height="34"/>
+                            <TextBlock Text="Grade Level"
+                                       VerticalAlignment="Center"
+                                       Margin="10, 0, 0, 0"
+                                       Style="{DynamicResource StudentInfoTextBlock}"/>
                         </StackPanel>
                     </StackPanel>
                 </DockPanel>
+
+                <Border DockPanel.Dock="Top"
+                        Background="White"
+                        Margin="10, 20, 10, 0"
+                        Height="50">
+
+                    <TextBlock Text="No student found"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Margin="10, 0, 0, 0"
+                               Style="{DynamicResource StatusTextBlock}"/>
+                </Border>
 
                 <controls:CustomButton DockPanel.Dock="Bottom"
                                        Content="START"

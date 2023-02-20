@@ -176,6 +176,7 @@ namespace SmartBusWPF
 
                 case AppCommands.DETECTED_IMAGE_COMMAND:
                     LoggerService.Log(LogLevel.Info, "Python", content);
+                    Services.GetService<IHuskyLensService>().Handle(content);
                     break;
             }
         }

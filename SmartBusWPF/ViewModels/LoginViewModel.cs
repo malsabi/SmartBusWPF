@@ -1,7 +1,9 @@
 ﻿using SmartBusWPF.Models.API;
+using SmartBusWPF.Models.Bus;
 using SmartBusWPF.Common.Consts;
 using CommunityToolkit.Mvvm.Input;
-using SmartBusWPF.DTOs.Auth.Login;
+using SmartBusWPF.DTOs.Auth.Login.Request;
+using SmartBusWPF.DTOs.Auth.Login.Response;
 using SmartBusWPF.Common.Interfaces.Services;
 
 namespace SmartBusWPF.ViewModels
@@ -107,13 +109,14 @@ namespace SmartBusWPF.ViewModels
             IsLoginInProcess = true;
             LoginCommand.NotifyCanExecuteChanged();
           
-            LoginDriverDto loginDriverDto = new()
+
+            LoginBusDriverRequestDto loginDriverDto = new()
             {
                 DriverID = DriverID,
                 Password = Password
             };
 
-            HttpResponseModel<LoginDriverResponseDto> result = await httpClientService.PostAsync<LoginDriverDto, LoginDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+            HttpResponseModel<LoginBusDriverResponseDto> result = await httpClientService.PostAsync<LoginBusDriverRequestDto, LoginBusDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
 
             LoginButtonText = "LOGIN";
             IsLoginInProcess = false;
@@ -134,22 +137,22 @@ namespace SmartBusWPF.ViewModels
                 {
                     BusDriver = new BusDriverModel()
                     {
-                        ID = result.Response.ID,
-                        FirstName = result.Response.FirstName,
-                        LastName = result.Response.LastName,
-                        Email = result.Response.Email,
-                        DriverID = result.Response.DriverID,
-                        PhoneNumber = result.Response.PhoneNumber,
-                        Country = result.Response.Country
+                        ID = result.Response.BusDriverDto.ID,
+                        FirstName = result.Response.BusDriverDto.FirstName,
+                        LastName = result.Response.BusDriverDto.LastName,
+                        Email = result.Response.BusDriverDto.Email,
+                        DriverID = result.Response.BusDriverDto.DriverID,
+                        PhoneNumber = result.Response.BusDriverDto.PhoneNumber,
+                        Country = result.Response.BusDriverDto.Country
                     },
                     Bus = new BusModel()
                     {
                         ID = result.Response.BusDto.ID,
-                        BusNumber = result.Response.BusDto.BusNumber,
+                        LicenseNumber = result.Response.BusDto.LicenseNumber,
                         CurrentLocation = result.Response.BusDto.CurrentLocation,
                         Capacity = result.Response.BusDto.Capacity
                     },
-                    AuthToken = result.Response.Token,
+                    AuthToken = result.Response.AuthToken,
                     IsActive = true
                 };
                 navigationService.Navigate<HomeViewModel>();

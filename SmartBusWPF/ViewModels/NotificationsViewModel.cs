@@ -19,9 +19,9 @@ namespace SmartBusWPF.ViewModels
 
         public ObservableCollection<NotificationModel> Notifications { get; private set; }
 
-        private async void Initialize()
+        private void Initialize()
         {
-            await busNotificationService.JoinBusGroupAsync(1);
+            //await busNotificationService.JoinBusGroupAsync(1);
         }
     }
 }

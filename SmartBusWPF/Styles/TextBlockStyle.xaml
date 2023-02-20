@@ -5,7 +5,7 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="24" />
         <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{StaticResource  HeaderColor}" />
+        <Setter Property="Foreground" Value="{StaticResource HeaderColor}" />
     </Style>
 
     <Style x:Key="WatermarkTextBlock" TargetType="TextBlock">
@@ -69,5 +69,12 @@
         <Setter Property="FontSize" Value="17" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="{DynamicResource VersionColor}" />
+    </Style>
+
+    <Style x:Key="StatusTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SecondaryColor}" />
     </Style>
 </ResourceDictionary>

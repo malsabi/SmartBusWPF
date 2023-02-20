@@ -23,11 +23,11 @@ namespace SmartBusWPF.ViewModels
 
         private void Initialize()
         {
-            OpenHomeCommand = new RelayCommand(Home);   
-            OpenProfileCommand = new RelayCommand(Profile);
-            LogoutCommand = new RelayCommand(Logout);
-            OpenLogsCommand = new RelayCommand(Logs);
-            OpenNotificationsCommand = new RelayCommand(Notifications);
+            OpenHomeCommand = new RelayCommand(Home, CanNavigate);   
+            OpenProfileCommand = new RelayCommand(Profile, CanNavigate);
+            LogoutCommand = new RelayCommand(Logout, CanNavigate);
+            OpenLogsCommand = new RelayCommand(Logs, CanNavigate);
+            OpenNotificationsCommand = new RelayCommand(Notifications, CanNavigate);
         }
 
         private void Home()
@@ -38,6 +38,11 @@ namespace SmartBusWPF.ViewModels
         private void Profile()
         {
             navigationService.Navigate<ProfileViewModel>();
+        }
+
+        private bool CanNavigate()
+        {
+            return App.Current.BusDriverSession != null && !App.Current.BusDriverSession.IsTripStarted;
         }
 
         private void Logout()

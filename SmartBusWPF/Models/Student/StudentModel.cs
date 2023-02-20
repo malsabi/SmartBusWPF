@@ -1,21 +1,18 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace SmartBusWPF.Models.Student
+﻿namespace SmartBusWPF.Models.Student
 {
-    public class StudentModel : ObservableObject
+    public class StudentModel
     {
-        private string image;
-        public string Image
-        {
-            get => image;
-            set => SetProperty(ref image, value);
-        }
-
-        private string name;
-        public string Name
-        {
-            get => name;
-            set => SetProperty(ref name, value);
-        }
+        public int ID { get; set; }
+        public string Image { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Gender { get; set; }
+        public int GradeLevel { get; set; }
+        public string Address { get; set; }
+        public int BelongsToBusID { get; set; }
+        public bool IsAtSchool { get; set; } = false;
+        public bool IsAtHome { get; set; } = true;
+        public bool IsOnBus { get; set; } = false;
+        public int ParentID { get; set; }
     }
 }

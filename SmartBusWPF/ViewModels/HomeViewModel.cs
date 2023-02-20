@@ -13,22 +13,16 @@ namespace SmartBusWPF.ViewModels
             Initialize();
         }
 
-        public IRelayCommand ProfileCommand { get; private set; }
         public IRelayCommand StartTripCommand { get; private set; }
 
         private void Initialize()
         {
-            ProfileCommand = new RelayCommand(Profile);
             StartTripCommand = new RelayCommand(StartTrip);
-        }
-
-        private void Profile()
-        {
-            //navigationService.Navigate<LoginViewModel>();
         }
 
         private void StartTrip()
         {
+            App.Current.BusDriverSession.IsTripStarted = true;
             navigationService.Navigate<TripViewModel>();
         }
     }

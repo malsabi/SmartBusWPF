@@ -14,7 +14,7 @@ namespace SmartBusWPF.ViewModels
         private readonly INavigationService navigationService;
 
         public TripViewModel(ILoggerService loggerService,
-                     INavigationService navigationService) : base(navigationService)
+                            INavigationService navigationService) : base(navigationService)
         {
             this.loggerService = loggerService;
             this.navigationService = navigationService;
@@ -67,7 +67,7 @@ namespace SmartBusWPF.ViewModels
             FullName = "Full Name";
             Address = "Address";
             GradeLevel = "Grade Level";
-            Status = "Status: N/A";
+            Status = "No student found";
             WeakReferenceMessenger.Default.Register(this);
         }
 

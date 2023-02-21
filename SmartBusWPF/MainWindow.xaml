@@ -6,14 +6,9 @@
         xmlns:local="clr-namespace:SmartBusWPF"
         mc:Ignorable="d"
         Title="Smart Bus Platform"
-        Height="650"
-        Width="950"
-        MinHeight="650"
-        MinWidth="950">
-    <Grid>
-        <!--<Frame x:Name="NavigationFrame"
-               NavigationUIVisibility="Hidden"
-               Background="Black">
-        </Frame>-->
-    </Grid>
+        Height="700"
+        Width="1000"
+        MinHeight="700"
+        MinWidth="1000"
+        WindowStartupLocation="CenterScreen">
 </Window>

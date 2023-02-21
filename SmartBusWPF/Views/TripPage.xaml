@@ -141,7 +141,7 @@
                             <Image Source="/Assets/Images/UserInfo.png"
                                     Width="34"
                                     Height="34"/>
-                            <TextBlock Text="Full Name"
+                            <TextBlock Text="{Binding FullName}"
                                         VerticalAlignment="Center"
                                         Margin="10, 0, 0, 0"
                                         Style="{DynamicResource StudentInfoTextBlock}"/>
@@ -159,7 +159,7 @@
                             <Image Source="/Assets/Images/UserAddress.png"
                                     Width="34"
                                     Height="34"/>
-                            <TextBlock Text="Address"
+                            <TextBlock Text="{Binding Address}"
                                         VerticalAlignment="Center"
                                         Margin="10, 0, 0, 0"
                                         Style="{DynamicResource StudentInfoTextBlock}"/>
@@ -177,7 +177,7 @@
                             <Image Source="/Assets/Images/UserSchool.png"
                                    Width="34"
                                    Height="34"/>
-                            <TextBlock Text="Grade Level"
+                            <TextBlock Text="{Binding GradeLevel}"
                                        VerticalAlignment="Center"
                                        Margin="10, 0, 0, 0"
                                        Style="{DynamicResource StudentInfoTextBlock}"/>
@@ -190,7 +190,7 @@
                         Margin="10, 20, 10, 0"
                         Height="50">
 
-                    <TextBlock Text="No student found"
+                    <TextBlock Text="{Binding Status}"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Center"
                                Margin="10, 0, 0, 0"
@@ -204,7 +204,8 @@
                                        CornerRadius="15"
                                        Margin="0, 0, 10, 20"
                                        HorizontalAlignment="Right"
-                                       VerticalAlignment="Bottom"/>
+                                       VerticalAlignment="Bottom"
+                                       Command="{Binding StartTripCommand}"/>
             </DockPanel>
         </DockPanel>
 

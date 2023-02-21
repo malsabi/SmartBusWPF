@@ -18,5 +18,10 @@
             public const string RegisterStudent = "/api/Auth/register/student";
             public const string RegisterBusDriver = "/api/Auth/register/bus-driver";
         }
+
+        public static class Student
+        {
+            public const string GetStudent = "/api/Student/{0}";
+        }
     }
 }

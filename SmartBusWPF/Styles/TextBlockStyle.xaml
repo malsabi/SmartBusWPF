@@ -36,6 +36,20 @@
         <Setter Property="Foreground" Value="{StaticResource TotalStudentsColor}" />
     </Style>
 
+    <Style x:Key="StudentInfoHeaderTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SurfaceColor}" />
+    </Style>
+
+    <Style x:Key="LiveBusMapTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SurfaceColor}" />
+    </Style>
+    
     <Style x:Key="StudentInfoTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="17" />
@@ -75,6 +89,20 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="17" />
         <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SecondaryColor}" />
+    </Style>
+
+    <Style x:Key="StudentWarningTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource SecondaryColor}" />
+    </Style>
+
+    <Style x:Key="StudentWarningParagraphTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Foreground" Value="{StaticResource SecondaryColor}" />
     </Style>
 </ResourceDictionary>

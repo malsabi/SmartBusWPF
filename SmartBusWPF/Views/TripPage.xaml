@@ -8,8 +8,9 @@
       xmlns:tooltip="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
       xmlns:uc="clr-namespace:SmartBusWPF.Views.UserControls"
+      xmlns:modal="clr-namespace:ModalControl;assembly=ModalControl"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="950"
+      d:DesignWidth="1200" d:DesignHeight="900" 
       Title="TripPage"
       ShowsNavigationUI="False">
 
@@ -19,7 +20,48 @@
     </Page.Resources>
 
     <controls:CustomGrid>
+        <modal:Modal Grid.ColumnSpan="3"
+                     Grid.RowSpan="3"
+                     IsOpen="{Binding ShowWarningModal}" 
+                     Panel.ZIndex="100">
 
+            <StackPanel Orientation="Vertical"
+                        Background="White"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="450"
+                        Height="450">
+                
+                <Image Source="/Assets/Images/Warning.png"
+                       Width="200"
+                       Height="200"
+                       Margin="0, 10, 0, 0"/>
+
+                <TextBlock Text="Students Still on Board"
+                           HorizontalAlignment="Center"
+                           Margin="0, 10, 0, 0"
+                           Style="{DynamicResource StudentWarningTextBlock}"/>
+
+                <TextBlock Text="Please note that there are still students on board the bus. Make sure to check for any students who may have fallen asleep or been left behind before exiting the vehicle. Thank you for your attention to this matter."
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Stretch"
+                           Margin="10, 20, 10, 0"
+                           Style="{DynamicResource StudentWarningParagraphTextBlock}"/>
+
+                <controls:CustomButton Content="CLOSE"
+                                       Foreground="White"
+                                       Background="#383838"
+                                       HoverColor="#4A4A4A"
+                                       ClickColor="#2C2C2C"
+                                       Width="100"
+                                       Height="40"
+                                       CornerRadius="15"
+                                       HorizontalAlignment="Center"
+                                       Margin="0, 20, 0, 0"
+                                       Command="{Binding CloseModalCommand}"/>
+            </StackPanel>
+        </modal:Modal>
         <!--Logo Image-->
         <Image Grid.Row="0"
                Grid.Column="0"
@@ -85,8 +127,7 @@
                        Margin="10, 10, 0, 0"
                        Style="{DynamicResource TotalStudentsTextBlock}">
                 <TextBlock.Text>
-                    <Binding Path="TotalStudents" StringFormat="Total Students: {0}">
-                    </Binding>
+                    <Binding Path="ActiveStudents.Count" StringFormat="Active Students: {0}"/>
                 </TextBlock.Text>
             </TextBlock>
 
@@ -126,13 +167,45 @@
                     BorderBrush="White"
                     BorderThickness="0, 0, 2, 0"/>
 
-            <uc:FaceScanningControl Grid.Column="1"
-                                    Grid.RowSpan="2"
-                                    DataContext="{Binding}"/>
-            
-            <uc:LiveMapControl Grid.Column="1"
-                               Grid.RowSpan="2"
-                               DataContext="{Binding}"/>
+            <Grid Grid.Column="1"
+                  Grid.RowSpan="2"
+                  Background="Transparent">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500*"/>
+                    <ColumnDefinition Width="400"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="400"/>
+                    <RowDefinition Height="250*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+
+                <uc:FaceScanningControl Grid.ColumnSpan="2"
+                                        Grid.Row="0"
+                                        DataContext="{Binding}"/>
+
+                <uc:LiveMapControl Grid.Column="0"
+                                   Grid.Row="1"
+                                   DataContext="{Binding}"
+                                   Panel.ZIndex="1"/>
+
+                <controls:CustomButton Grid.Column="1"
+                                       Grid.Row="2"
+                                       Content="STOP TRIP"
+                                       Foreground="White"
+                                       Background="{DynamicResource DangerColor}"
+                                       HoverColor="{DynamicResource DangerHoverColor}"
+                                       ClickColor="{DynamicResource DangerClickColor}"
+                                       DisabledColor="{DynamicResource DangerDisabledColor}"
+                                       Width="140"
+                                       Height="50"
+                                       CornerRadius="15"
+                                       Margin="0, 10, 20, 10"
+                                       HorizontalAlignment="Right"
+                                       Command="{Binding StartTripCommand}"/>
+            </Grid>
         </Grid>
 
         <!--Version-->

@@ -37,4 +37,8 @@
     
     <!--Danger-->
     <SolidColorBrush x:Key="DangerColor" Color="#DC3545"/>
+    <SolidColorBrush x:Key="DangerHoverColor" Color="#D82231"/>
+    <SolidColorBrush x:Key="DangerClickColor" Color="#B9303F"/>
+    <SolidColorBrush x:Key="DangerDisabledColor" Color="#BFBFBF"/>
+
 </ResourceDictionary>

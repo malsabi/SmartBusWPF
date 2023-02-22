@@ -8,15 +8,14 @@
              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="650" d:DesignWidth="950">
 
     <UserControl.Resources>
         <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid Margin="10, 10, 0, 0"
-          Background="{DynamicResource SecondaryColor}"
-          Visibility="{Binding ShowMap, Converter={StaticResource BoolToVisibilityConverter}}">
+    <Grid Margin="10, 10, 10, 10"
+          Background="{DynamicResource SecondaryColor}">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -25,30 +24,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0"
                    Grid.Row="0"
-                   Text="Live Geo Map"
+                   Text="Live Bus Map"
                    Margin="10, 0, 0, 0"
-                   Style="{DynamicResource TotalStudentsTextBlock}"/>
+                   Style="{DynamicResource LiveBusMapTextBlock}"/>
 
         <wv2:WebView2 x:Name="webview"
+                      Panel.ZIndex="0"
                       Grid.Column="0"
                       Grid.Row="1"
-                      Margin="10, 0, 10, 10"
-                      Source="{Binding MapPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <controls:CustomButton Grid.Column="1"
-                               Grid.Row="2"
-                               Content="FINISH"
-                               Width="150"
-                               Height="50"
-                               CornerRadius="15"
-                               Margin="0, 0, 10, 10"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Command="{Binding StopTripCommand}"/>
+                      Margin="10, 0, 0, 0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
     </Grid>
 </UserControl>

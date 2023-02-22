@@ -4,11 +4,14 @@
     <meta charset="utf-8" />
     <title>Bing Maps JavaScript API Sample</title>
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=MB5JgYFBR6Do4sbOBKKb~8w2jQwZixHLZlJCtmur0Dw~AoPVZ0u1expsY19vucXpk58YX-bcjiQIkO-ZPi5RNIfAgQ0JOiUgvhPCKZXbjgrz'></script>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <script>
-        function refreshLocation()
-        {
-            navigator.geolocation.getCurrentPosition(function(position)
-            {
+        function refreshLocation() {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 // Get the current position
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;

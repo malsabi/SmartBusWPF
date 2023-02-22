@@ -7,16 +7,16 @@
              xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls" 
              xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="800">
+             d:DesignHeight="400" d:DesignWidth="800">
 
     <UserControl.Resources>
         <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <convertors:Base64ImageConverter x:Key="Base64ImageConverter"/>
     </UserControl.Resources>
 
-    <Grid Margin="10, 0, 0, 0"
+    <Grid Margin="10, 10, 10, 10"
           Background="{DynamicResource SecondaryColor}"
-          Visibility="{Binding ShowScanningPhase, Converter={StaticResource BoolToVisibilityConverter}}">
+          VerticalAlignment="Stretch">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>
@@ -27,7 +27,6 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="270"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0"
@@ -35,7 +34,7 @@
                    Text="Student Information"
                    HorizontalAlignment="Left"
                    Margin="10, 10, 0, 0"
-                   Style="{DynamicResource TotalStudentsTextBlock}"/>
+                   Style="{DynamicResource StudentInfoHeaderTextBlock}"/>
 
         <Border Grid.Column="0"
                 Grid.Row="1"
@@ -46,7 +45,7 @@
                 HorizontalAlignment="Left"
                 CornerRadius="125">
 
-            <Image Source="{Binding StudentImage, Converter={StaticResource Base64ImageConverter}}"
+            <Image Source="{Binding CurrentStudent.Image, Converter={StaticResource Base64ImageConverter}}"
                    Width="150"
                    Height="150"/>
         </Border>
@@ -64,10 +63,13 @@
                 <Image Source="/Assets/Images/UserInfo.png"
                        Width="34"
                        Height="34"/>
-                <TextBlock Text="{Binding FullName}"
-                           VerticalAlignment="Center"
+                <TextBlock VerticalAlignment="Center"
                            Margin="10, 0, 0, 0"
-                           Style="{DynamicResource StudentInfoTextBlock}"/>
+                           Style="{DynamicResource StudentInfoTextBlock}">
+                    <TextBlock.Text>
+                        <Binding Path="CurrentStudent.FullName" StringFormat="Full Name: {0}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
 
             <Border BorderBrush="{DynamicResource SplitBorderColor}"
@@ -82,10 +84,13 @@
                        Width="34"
                        Height="34"/>
 
-                <TextBlock Text="{Binding Address}"
-                           VerticalAlignment="Center"
+                <TextBlock VerticalAlignment="Center"
                            Margin="10, 0, 0, 0"
-                           Style="{DynamicResource StudentInfoTextBlock}"/>
+                           Style="{DynamicResource StudentInfoTextBlock}">
+                    <TextBlock.Text>
+                        <Binding Path="CurrentStudent.Address" StringFormat="Address: {0}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
 
             <Border BorderBrush="{DynamicResource SplitBorderColor}"
@@ -99,10 +104,13 @@
                 <Image Source="/Assets/Images/UserSchool.png"
                        Width="34"
                        Height="34"/>
-                <TextBlock Text="{Binding GradeLevel}"
-                           VerticalAlignment="Center"
+                <TextBlock VerticalAlignment="Center"
                            Margin="10, 0, 0, 0"
-                           Style="{DynamicResource StudentInfoTextBlock}"/>
+                           Style="{DynamicResource StudentInfoTextBlock}">
+                    <TextBlock.Text>
+                        <Binding Path="CurrentStudent.GradeLevel" StringFormat="Grade Level: {0}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
         </StackPanel>
 
@@ -111,125 +119,14 @@
                 Background="White"
                 Margin="10, 0, 10, 0">
 
-            <TextBlock Text="{Binding Status}"
-                       HorizontalAlignment="Stretch"
+            <TextBlock HorizontalAlignment="Stretch"
                        VerticalAlignment="Center"
                        Margin="10, 0, 0, 0"
-                       Style="{DynamicResource StatusTextBlock}"/>
+                       Style="{DynamicResource StatusTextBlock}">
+                <TextBlock.Text>
+                    <Binding Path="CurrentStudent.Status" StringFormat="Status: {0}"/>
+                </TextBlock.Text>
+            </TextBlock>
         </Border>
-
-        <controls:CustomButton Grid.Column="2"
-                               Grid.Row="3"
-                               Content="START"
-                               Width="150"
-                               Height="50"
-                               CornerRadius="15"
-                               Margin="0, 0, 10, 10"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Command="{Binding StartTripCommand}"/>
-
-        <!--<DockPanel DockPanel.Dock="Left"
-                   LastChildFill="False"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Stretch">
-            
-            <TextBlock DockPanel.Dock="Top"
-                       Text="Student Information"
-                       HorizontalAlignment="Left"
-                       Margin="10, 10, 0, 0"
-                       Style="{DynamicResource TotalStudentsTextBlock}"/>
-
-            <DockPanel DockPanel.Dock="Top">
-                <Border DockPanel.Dock="Left"
-                        Background="#D9DBF0"
-                        Width="250"
-                        Height="250"
-                        Margin="10, 30, 10, 0"
-                        HorizontalAlignment="Left"
-                        CornerRadius="125">
-
-                    <Image Source="/Assets/Images/Image_Placeholder.png"
-                           Width="150"
-                           Height="150"/>
-                </Border>
-
-                <StackPanel DockPanel.Dock="Right"
-                            Orientation="Vertical"
-                            Margin="0, 0, 10, 0"
-                            VerticalAlignment="Center"
-                            Background="white">
-
-                    <StackPanel Orientation="Horizontal"
-                                Margin="30, 30, 20, 0">
-
-                        <Image Source="/Assets/Images/UserInfo.png"
-                               Width="34"
-                               Height="34"/>
-                        <TextBlock Text="{Binding FullName}"
-                                   VerticalAlignment="Center"
-                                   Margin="10, 0, 0, 0"
-                                   Style="{DynamicResource StudentInfoTextBlock}"/>
-                    </StackPanel>
-
-                    <Border BorderBrush="{DynamicResource SplitBorderColor}"
-                            BorderThickness="2"
-                            Height="1"
-                            Margin="30, 10, 20, 0"/>
-
-                    <StackPanel Orientation="Horizontal"
-                                Margin="30, 30, 20, 0">
-
-                        <Image Source="/Assets/Images/UserAddress.png"
-                               Width="34"
-                               Height="34"/>
-
-                        <TextBlock Text="{Binding Address}"
-                                   VerticalAlignment="Center"
-                                   Margin="10, 0, 0, 0"
-                                   Style="{DynamicResource StudentInfoTextBlock}"/>
-                    </StackPanel>
-
-                    <Border BorderBrush="{DynamicResource SplitBorderColor}"
-                            BorderThickness="2"
-                            Height="1"
-                            Margin="30, 10, 20, 0"/>
-
-                    <StackPanel Orientation="Horizontal"
-                                Margin="30, 30, 20, 30">
-
-                        <Image Source="/Assets/Images/UserSchool.png"
-                               Width="34"
-                               Height="34"/>
-                        <TextBlock Text="{Binding GradeLevel}"
-                                   VerticalAlignment="Center"
-                                   Margin="10, 0, 0, 0"
-                                   Style="{DynamicResource StudentInfoTextBlock}"/>
-                    </StackPanel>
-                </StackPanel>
-            </DockPanel>
-
-            <Border DockPanel.Dock="Top"
-                    Background="White"
-                    Margin="10, 20, 10, 0"
-                    Height="50">
-
-                <TextBlock Text="{Binding Status}"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           Margin="10, 0, 0, 0"
-                           Style="{DynamicResource StatusTextBlock}"/>
-            </Border>
-
-            <controls:CustomButton DockPanel.Dock="Bottom"
-                                   Content="START"
-                                   Width="150"
-                                   Height="50"
-                                   CornerRadius="15"
-                                   Margin="0, 0, 10, 20"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Bottom"
-                                   Command="{Binding StartTripCommand}"/>
-        </DockPanel>-->
     </Grid>
 </UserControl>

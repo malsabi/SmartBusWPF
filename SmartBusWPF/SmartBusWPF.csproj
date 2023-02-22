@@ -27,6 +27,7 @@
     <None Remove="Assets\Images\UserAddress.png" />
     <None Remove="Assets\Images\UserInfo.png" />
     <None Remove="Assets\Images\UserSchool.png" />
+    <None Remove="Assets\Images\Warning.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +61,9 @@
     <Content Include="Assets\Images\UserSchool.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Images\Warning.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Bus.ico" />
   </ItemGroup>
 
@@ -68,6 +72,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.14" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1587.40" />
+    <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,7 +87,7 @@
     <None Update="Assets\Apps\SmartBus.HuskyLens.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Html\map.html">
+    <None Update="Assets\Html\RealTimeMap.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Settings.settings">

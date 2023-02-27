@@ -18,11 +18,14 @@
 
   <ItemGroup>
     <None Remove="Assets\Images\GoBack.png" />
+    <None Remove="Assets\Images\Home.png" />
     <None Remove="Assets\Images\Identification.png" />
     <None Remove="Assets\Images\Image_Placeholder.png" />
     <None Remove="Assets\Images\Key.png" />
     <None Remove="Assets\Images\Logo.png" />
+    <None Remove="Assets\Images\School.png" />
     <None Remove="Assets\Images\Start.png" />
+    <None Remove="Assets\Images\Unavailable.png" />
     <None Remove="Assets\Images\User.png" />
     <None Remove="Assets\Images\UserAddress.png" />
     <None Remove="Assets\Images\UserInfo.png" />
@@ -32,6 +35,9 @@
 
   <ItemGroup>
     <Content Include="Assets\Images\GoBack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\Home.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\Identification.png">
@@ -46,7 +52,13 @@
     <Content Include="Assets\Images\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Images\School.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Images\Start.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\Unavailable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\User.png">
@@ -68,10 +80,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="110.0.280" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.14" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1587.40" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
 

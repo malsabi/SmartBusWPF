@@ -5,9 +5,9 @@ using SmartBusWPF.Models.API;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using SmartBusWPF.Common.Consts;
-using SmartBusWPF.Common.Interfaces.Services;
+using SmartBusWPF.Common.Interfaces.Services.API;
 
-namespace SmartBusWPF.Services
+namespace SmartBusWPF.Services.API
 {
     public class HttpClientService : IHttpClientService
     {

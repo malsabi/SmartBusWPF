@@ -3,12 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SmartBusWPF"
+        xmlns:local="clr-namespace:SmartBusWPF" 
+        xmlns:modal="clr-namespace:ModalControl;assembly=ModalControl"
         mc:Ignorable="d"
         Title="Smart Bus Platform"
         Width="1400"
         Height="1200"
-        MinWidth="1400"
-        MinHeight="1200"
+        d:DesignWidth="1200" d:DesignHeight="900"
         WindowStartupLocation="CenterScreen">
+
+    <Grid x:Name="myGrid">
+        <modal:Modal IsOpen="{Binding IsServiceAvailable}"
+                 Panel.ZIndex="100">
+
+            <StackPanel HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Width="600"
+                    Height="550">
+                <Image Source="/Assets/Images/Unavailable.png"
+                   Width="250"
+                   Height="250"/>
+                <TextBlock Text="We're sorry, the service is currently unavailable." 
+                       Margin="0 20"
+                       TextWrapping="WrapWithOverflow"
+                       FontSize="29"
+                       FontWeight="Bold"
+                       TextAlignment="Center"/>
+                <TextBlock Text="Please contact the technical or support team for assistance." 
+                       Margin="0 10"
+                       TextWrapping="WrapWithOverflow"
+                       FontSize="22"
+                       FontWeight="Medium"
+                       TextAlignment="Center"/>
+                <TextBlock Text="Thank you for your patience." 
+                       Margin="0 10"
+                       FontSize="22"
+                       FontWeight="Medium"
+                       TextAlignment="Center"/>
+            </StackPanel>
+        </modal:Modal>
+    </Grid>
 </Window>

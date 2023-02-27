@@ -42,6 +42,10 @@ namespace SmartBusWPF.ViewModels
 
         private bool CanNavigate()
         {
+            if (App.Current.BusDriverSession == null)
+            {
+                return true;
+            }
             return App.Current.BusDriverSession != null && !App.Current.BusDriverSession.IsTripStarted;
         }
 

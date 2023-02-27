@@ -1,25 +1,28 @@
-﻿using SmartBusWPF.Models.API;
+﻿using MapsterMapper;
+using SmartBusWPF.Models.API;
 using SmartBusWPF.Models.Bus;
-using SmartBusWPF.Common.Consts;
 using CommunityToolkit.Mvvm.Input;
-using SmartBusWPF.DTOs.Auth.Login.Request;
 using SmartBusWPF.DTOs.Auth.Login.Response;
 using SmartBusWPF.Common.Interfaces.Services;
+using SmartBusWPF.Common.Interfaces.Services.API;
 
 namespace SmartBusWPF.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private readonly IMapper mapper;
+        private readonly IAuthService authService;
         private readonly INavigationService navigationService;
-        private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
 
-        public LoginViewModel(INavigationService navigationService,
-                              IHttpClientService httpClientService,
+        public LoginViewModel(IMapper mapper,
+                              IAuthService authService,
+                              INavigationService navigationService,
                               ICryptographyService cryptographyService) : base(navigationService)
         {
+            this.mapper = mapper;
+            this.authService = authService;
             this.navigationService = navigationService;
-            this.httpClientService = httpClientService;
             this.cryptographyService = cryptographyService;
             Initialize();
         }
@@ -93,6 +96,7 @@ namespace SmartBusWPF.ViewModels
         {
             LoginCommand = new RelayCommand(Login, CanLogin);
             IsStaySignedIn = false;
+            LoginStatus = "Server is not responding";
             ShowLoginStatus = false;
             IsLoginInProcess = false;
             LoginButtonText = "LOGIN";
@@ -108,15 +112,8 @@ namespace SmartBusWPF.ViewModels
             LoginButtonText = "LOGGING IN..";
             IsLoginInProcess = true;
             LoginCommand.NotifyCanExecuteChanged();
-          
 
-            LoginBusDriverRequestDto loginDriverDto = new()
-            {
-                DriverID = DriverID,
-                Password = Password
-            };
-
-            HttpResponseModel<LoginBusDriverResponseDto> result = await httpClientService.PostAsync<LoginBusDriverRequestDto, LoginBusDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+            HttpResponseModel<LoginBusDriverResponseDto> result = await authService.Login(DriverID, Password);
 
             LoginButtonText = "LOGIN";
             IsLoginInProcess = false;
@@ -128,30 +125,14 @@ namespace SmartBusWPF.ViewModels
 
                 if (IsStaySignedIn)
                 {
-                    Properties.Settings.Default.DriverID = cryptographyService.Encrypt(loginDriverDto.DriverID);
-                    Properties.Settings.Default.Password = cryptographyService.Encrypt(loginDriverDto.Password);
+                    Properties.Settings.Default.DriverID = cryptographyService.Encrypt(DriverID);
+                    Properties.Settings.Default.Password = cryptographyService.Encrypt(Password);
                 }
                 Properties.Settings.Default.Save();
-
                 App.Current.BusDriverSession = new BusDriverSessionModel()
                 {
-                    BusDriver = new BusDriverModel()
-                    {
-                        ID = result.Response.BusDriverDto.ID,
-                        FirstName = result.Response.BusDriverDto.FirstName,
-                        LastName = result.Response.BusDriverDto.LastName,
-                        Email = result.Response.BusDriverDto.Email,
-                        DriverID = result.Response.BusDriverDto.DriverID,
-                        PhoneNumber = result.Response.BusDriverDto.PhoneNumber,
-                        Country = result.Response.BusDriverDto.Country
-                    },
-                    Bus = new BusModel()
-                    {
-                        ID = result.Response.BusDto.ID,
-                        LicenseNumber = result.Response.BusDto.LicenseNumber,
-                        CurrentLocation = result.Response.BusDto.CurrentLocation,
-                        Capacity = result.Response.BusDto.Capacity
-                    },
+                    BusDriver = mapper.Map<BusDriverModel>(result.Response.BusDriverDto),
+                    Bus = mapper.Map<BusModel>(result.Response.BusDto),
                     AuthToken = result.Response.AuthToken,
                     IsActive = true
                 };
@@ -159,14 +140,7 @@ namespace SmartBusWPF.ViewModels
             }
             else
             {
-                if (result == null)
-                {
-                    LoginStatus = "Server is not responding";
-                }
-                else
-                {
-                    LoginStatus = result.ProblemDetails.Detail;
-                }
+                LoginStatus = result.ProblemDetails.Detail;
                 ShowLoginStatus = true;
             }
         }

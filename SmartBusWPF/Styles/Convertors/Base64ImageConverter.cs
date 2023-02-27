@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace SmartBusWPF.Styles.Convertors
 {
-    public class Base64ImageConverter : IValueConverter
+    public class Base64ImageConverterConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

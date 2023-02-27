@@ -11,7 +11,9 @@
 
     <UserControl.Resources>
         <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <convertors:Base64ImageConverter x:Key="Base64ImageConverter"/>
+        <convertors:Base64ImageConverterMultiConverter x:Key="Base64ImageConverterMultiConverter"/>
+        <convertors:TripStatusToBackgroundColorConverter x:Key="TripStatusToBackgroundColorConverter" />
+        <convertors:TripStatusToForegroundColorConverter x:Key="TripStatusToForegroundColorConverter"/>
     </UserControl.Resources>
 
     <Grid Margin="10, 10, 10, 10"
@@ -45,9 +47,15 @@
                 HorizontalAlignment="Left"
                 CornerRadius="125">
 
-            <Image Source="{Binding CurrentStudent.Image, Converter={StaticResource Base64ImageConverter}}"
-                   Width="150"
-                   Height="150"/>
+            <Image Width="150"
+                   Height="150">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource Base64ImageConverterMultiConverter}">
+                        <Binding Path="CurrentStudent.Image"/>
+                        <Binding Path="CurrentStudent.DefaultStudentImage"/>
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </Border>
 
         <StackPanel Grid.Column="1"
@@ -116,15 +124,16 @@
 
         <Border Grid.ColumnSpan="3"
                 Grid.Row="2"
-                Background="White"
+                Background="{Binding Status, Converter={StaticResource TripStatusToBackgroundColorConverter}}"
                 Margin="10, 0, 10, 0">
 
             <TextBlock HorizontalAlignment="Stretch"
                        VerticalAlignment="Center"
                        Margin="10, 0, 0, 0"
+                       Foreground="{Binding Status, Converter={StaticResource TripStatusToForegroundColorConverter}}"
                        Style="{DynamicResource StatusTextBlock}">
                 <TextBlock.Text>
-                    <Binding Path="CurrentStudent.Status" StringFormat="Status: {0}"/>
+                    <Binding Path="StatusMessage" StringFormat="Status: {0}"/>
                 </TextBlock.Text>
             </TextBlock>
         </Border>

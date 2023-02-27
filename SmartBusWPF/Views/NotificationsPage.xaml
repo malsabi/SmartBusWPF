@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SmartBusWPF.Views"
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignWidth="1200" d:DesignHeight="900"
       Title="NotificationsPage">
 
     <controls:CustomGrid>
@@ -110,6 +110,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
+                                       DisabledColor="Transparent"
                                        Command="{Binding OpenLogsCommand}"/>
             </StackPanel>
         </StackPanel>

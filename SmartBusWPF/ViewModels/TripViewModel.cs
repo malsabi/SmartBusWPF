@@ -1,31 +1,39 @@
-﻿using SmartBusWPF.Messages;
+﻿using System;
+using System.Linq;
+using MapsterMapper;
+using SmartBusWPF.Messages;
+using System.Threading.Tasks;
+using SmartBusWPF.Models.API;
+using SmartBusWPF.DTOs.Student;
+using SmartBusWPF.Common.Enums;
+using SmartBusWPF.Common.Consts;
 using SmartBusWPF.Models.Student;
 using CommunityToolkit.Mvvm.Input;
-using SmartBusWPF.Models.HuskyLens;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
-using SmartBusWPF.DTOs.Student;
-using SmartBusWPF.Common.Consts;
-using SmartBusWPF.Models.API;
-using System;
-using System.IO;
+using SmartBusWPF.Common.Interfaces.Services.API;
 
 namespace SmartBusWPF.ViewModels
 {
     public class TripViewModel : BaseViewModel, IRecipient<FaceRecognitionMessage>
     {
-        private readonly ILoggerService loggerService;
+        private bool isExecuting;
+        private object isExecutingLock;
+        private readonly IMapper mapper;
+        private readonly ITripService tripService;
+        private readonly IStudentService studentService;
         private readonly INavigationService navigationService;
-        private readonly IHttpClientService httpClientService;
 
-        public TripViewModel(ILoggerService loggerService,
-                            INavigationService navigationService,
-                            IHttpClientService httpClientService) : base(navigationService)
+        public TripViewModel(IMapper mapper,
+                             ITripService tripService,
+                             IStudentService studentService,
+                             INavigationService navigationService) : base(navigationService)
         {
-            this.loggerService = loggerService;
+            this.mapper = mapper;
+            this.tripService = tripService;
+            this.studentService = studentService;
             this.navigationService = navigationService;
-            this.httpClientService = httpClientService;
             Initialize();
         }
 
@@ -33,6 +41,8 @@ namespace SmartBusWPF.ViewModels
         public IRelayCommand StartTripCommand { get; private set; }
 
         public IRelayCommand StopTripCommand { get; private set; }
+
+        public IRelayCommand CloseModalCommand { get; private set; }
 
         public ObservableCollection<StudentModel> ActiveStudents { get; private set; }
 
@@ -49,71 +59,207 @@ namespace SmartBusWPF.ViewModels
             get => showWarningModal;
             set => SetProperty(ref showWarningModal, value);
         }
+
+        private TripStatus status;
+        public TripStatus Status
+        {
+            get => status;
+            set => SetProperty(ref status, value);
+        }
+
+        private string statusMessage;
+        public string StatusMessage
+        {
+            get => statusMessage;
+            set => SetProperty(ref statusMessage, value);
+        }
         #endregion
 
         private void Initialize()
         {
-            StartTripCommand = new RelayCommand(StartTrip, CanStartTrip);
-            StopTripCommand = new RelayCommand(StartTrip, CanStartTrip);
+            isExecuting = false;
+            isExecutingLock = new object();
+            StopTripCommand = new RelayCommand(StopTrip, CanStopTrip);
+            CloseModalCommand = new RelayCommand(CloseModal);
             ActiveStudents = new ObservableCollection<StudentModel>();
             CurrentStudent = new StudentModel();
+            Status = TripStatus.TRIP_READY;
+            StatusMessage = TripStatusConsts.TRIP_READY;
+            UpdateCurrentLocationWorker();
             WeakReferenceMessenger.Default.Register(this);
         }
 
-        private void StartTrip()
+        #region "Stop Trip Command"
+        private bool CanStopTrip()
         {
-            ShowWarningModal = true;
+            return App.Current.BusDriverSession.IsTripStarted;
         }
 
-        private bool CanStartTrip()
+        private async void StopTrip()
         {
-            return true; //ActiveStudents != null && ActiveStudents.Count > 0;
-        }
-
-        public async void Receive(FaceRecognitionMessage message)
-        {
-            FaceRecognitonModel model = message.Value;
-
-            HttpResponseModel<StudentDto> result = await httpClientService.GetAsync<StudentDto>(APIConsts.Student.GetStudent, App.Current.BusDriverSession.AuthToken, model.ID.ToString());
-            
-            if (result.IsSuccess)
+            if (ActiveStudents.Count > 0)
             {
-                StudentModel student = new()
-                {
-                    ID = result.Response.ID,
-                    Image = result.Response.Image,
-                    FirstName = result.Response.FirstName,
-                    LastName = result.Response.LastName,
-                    Gender = result.Response.Gender,
-                    GradeLevel = result.Response.GradeLevel,
-                    Address = result.Response.Address,
-                    BelongsToBusID = result.Response.BelongsToBusID,
-                    IsAtSchool = result.Response.IsAtSchool,
-                    IsAtHome = result.Response.IsAtHome,
-                    IsOnBus = result.Response.IsOnBus,
-                    ParentID = result.Response.ParentID
-                };
-
-                CurrentStudent = student;
-
-                if (!ActiveStudents.Contains(student))
-                {
-                    ActiveStudents.Add(student);
-                }
-                //StudentImage = student.Image;
-                //FullName = string.Format("{0} {1}", student.FirstName, student.LastName);
-                //Address = student.Address;
-                //GradeLevel = student.GradeLevel;
-                //Status = "The student with the given ID: " + model.ID + " found successfully";
+                ShowWarningModal = true;
             }
             else
             {
-                //StudentImage = "";
-                //FullName = "N/A";
-                //Address = "N/A";
-                //GradeLevel = 0;
-                //Status = "No student found with the given ID: " + model.ID;
+                HttpResponseModel<string> stopTripResult = await tripService.StopBusTrip(App.Current.BusDriverSession.Bus.ID, App.Current.BusDriverSession.AuthToken);
+
+                if (stopTripResult != null && stopTripResult.IsSuccess)
+                {
+                    App.Current.BusDriverSession.IsTripStarted = false;
+                    navigationService.Navigate<HomeViewModel>();
+                }
             }
         }
+        #endregion
+
+        #region "Close WarningModal Command"
+        private void CloseModal()
+        {
+            ShowWarningModal = false;
+        }
+        #endregion
+
+        #region "Messaging"
+        public async void Receive(FaceRecognitionMessage message)
+        {
+            lock (isExecutingLock)
+            {
+                if (isExecuting)
+                {
+                    return;
+                }
+                isExecuting = true;
+            }
+            try
+            {
+                Status = TripStatus.TRIP_IN_PROGRESS;
+                StatusMessage = TripStatusConsts.TRIP_IN_PROGRESS;
+                int busID = App.Current.BusDriverSession.Bus.ID;
+                string authToken = App.Current.BusDriverSession.AuthToken;
+                await AddStudentToTrip(busID, message.Value.ID, authToken);
+                await Task.Delay(2000);
+            }
+            catch (Exception ex)
+            {
+                App.Current.LoggerService.Log(LogLevel.Error, "TripViewModel", ex.Message);
+            }
+            finally
+            {
+                lock (isExecutingLock)
+                {
+                    CurrentStudent = new();
+                    Status = TripStatus.TRIP_READY;
+                    StatusMessage = TripStatusConsts.TRIP_READY;
+                    isExecuting = false;
+                }
+            }
+        }
+
+        private async Task AddStudentToTrip(int busID, int studentID, string authToken)
+        {
+            HttpResponseModel<StudentDto> getStudentResult = await studentService.GetStudent(studentID, authToken);
+
+            if (getStudentResult == null || !getStudentResult.IsSuccess)
+            {
+                Status = TripStatus.STUDENT_UNKNOWN;
+                StatusMessage = TripStatusConsts.STUDENT_UNKNOWN;
+                await Task.Delay(1000);
+                return;
+            }
+
+            StudentModel student = mapper.Map<StudentModel>(getStudentResult.Response);
+
+            if (student.BelongsToBusID != busID)
+            {
+                Status = TripStatus.STUDENT_INVALID_BUS;
+                StatusMessage = string.Format(TripStatusConsts.STUDENT_INVALID_BUS, student.BelongsToBusID);
+                await Task.Delay(1000);
+                return;
+            }
+
+            if (ActiveStudents.FirstOrDefault(s => s.ID == student.ID) is StudentModel existingStudent)
+            {
+                TimeSpan timeDifference = DateTime.Now - existingStudent.LastScanned;
+                if (timeDifference.TotalMinutes >= 1)
+                {
+                    await RemoveStudentFromTrip(busID, existingStudent, authToken);
+                    return;
+                }
+                Status = TripStatus.STUDENT_COOLDOWN;
+                StatusMessage = string.Format(TripStatusConsts.STUDENT_COOLDOWN, TimeSpan.FromMinutes(1) - timeDifference);
+                await Task.Delay(1000);
+                return;
+            }
+
+            HttpResponseModel<string> updateStudentResult = await tripService.UpdateStudentStatusOnBus(student.ID, busID, DateTime.Now, authToken);
+
+            if (updateStudentResult == null || !updateStudentResult.IsSuccess)
+            {
+                Status = TripStatus.STUDENT_UPDATE_ERROR;
+                StatusMessage = TripStatusConsts.STUDENT_UPDATE_ERROR;
+                await Task.Delay(1000);
+                return;
+            }
+
+            CurrentStudent = mapper.Map<StudentModel>(student);
+            CurrentStudent.LastScanned = DateTime.Now;
+            ActiveStudents.Add(CurrentStudent);
+
+            Status = TripStatus.STUDENT_ADDED;
+            StatusMessage = TripStatusConsts.STUDENT_ADDED;
+        }
+
+        private async Task RemoveStudentFromTrip(int busID, StudentModel existingStudent, string authToken)
+        {
+            HttpResponseModel<string> updateStudentResult = await tripService.UpdateStudentStatusOffBus(existingStudent.ID, busID, DateTime.Now, authToken);
+
+            if (updateStudentResult == null || !updateStudentResult.IsSuccess)
+            {
+                Status = TripStatus.STUDENT_UPDATE_ERROR;
+                StatusMessage = TripStatusConsts.STUDENT_UPDATE_ERROR;
+                await Task.Delay(1000);
+                return;
+            }
+
+            CurrentStudent = existingStudent;
+            ActiveStudents.Remove(existingStudent);
+
+            Status = TripStatus.STUDENT_REMOVED;
+            StatusMessage = TripStatusConsts.STUDENT_REMOVED;
+        }
+        #endregion
+
+        #region "Live Map Update"
+        private async void UpdateCurrentLocationWorker()
+        {
+            await Task.Run(async ()  => 
+            {
+                while (App.Current.BusDriverSession.IsTripStarted)
+                {
+                    double latitude = 0;
+                    double longitude = 0;
+
+                    int busID = App.Current.BusDriverSession.Bus.ID;
+                    string authToken = App.Current.BusDriverSession.AuthToken;
+                    string currentLocation = string.Format("{0}|{1}", latitude, longitude);
+
+                    HttpResponseModel<string> updateCurrentLocationResult = await tripService.UpdateBusLocation(busID, currentLocation, authToken);
+
+                    if (updateCurrentLocationResult != null && !updateCurrentLocationResult.IsSuccess)
+                    {
+                        App.Current.LoggerService.Log(LogLevel.Error, "TripViewModel", updateCurrentLocationResult.ProblemDetails.Detail);
+                    }
+                    else
+                    {
+                        App.Current.LoggerService.Log(LogLevel.Info, "TripViewModel", string.Format("Successfully updated the current bus location [{0}]", currentLocation));
+                    }
+
+                    await Task.Delay(3000);
+                }
+            });
+        }
+        #endregion
     }
 }

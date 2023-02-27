@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SmartBusWPF.Views.UserControls" 
              xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
-             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              xmlns:convertors="clr-namespace:SmartBusWPF.Styles.Convertors"
+             xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="950">
 
@@ -20,7 +20,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -32,12 +32,12 @@
                    Margin="10, 0, 0, 0"
                    Style="{DynamicResource LiveBusMapTextBlock}"/>
 
-        <wv2:WebView2 x:Name="webview"
-                      Panel.ZIndex="0"
-                      Grid.Column="0"
-                      Grid.Row="1"
-                      Margin="10, 0, 0, 0"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+        <Border Grid.Column="0"
+                Grid.Row="1"
+                Margin="10, 10, 10, 10"
+                BorderBrush="WhiteSmoke"
+                BorderThickness="0.8">
+            <cef:ChromiumWebBrowser x:Name="Browser"/>
+        </Border>
     </Grid>
 </UserControl>

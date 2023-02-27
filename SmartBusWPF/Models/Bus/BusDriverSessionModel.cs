@@ -6,7 +6,6 @@
         public BusModel Bus { get; set; }
         public string AuthToken { get; set; }
         public bool IsActive { get; set; }
-        public bool IsScanningPhase { get; set; }
         public bool IsTripStarted { get; set; }
     }
 }

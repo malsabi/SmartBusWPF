@@ -3,14 +3,95 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
       xmlns:local="clr-namespace:SmartBusWPF.Views"
       xmlns:controls="clr-namespace:SmartBusWPF.Styles.Controls"
+      xmlns:enums="clr-namespace:SmartBusWPF.Common.Enums"
+      xmlns:modal="clr-namespace:ModalControl;assembly=ModalControl"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="950"
+      d:DesignWidth="1200" d:DesignHeight="900"
       Title="HomePage"
       ShowsNavigationUI="False">
 
+    <Page.Resources>
+        <ObjectDataProvider x:Key="enumValues"
+                            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enums:DestinationType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Page.Resources>
+    
     <controls:CustomGrid>
+
+        <modal:Modal Grid.ColumnSpan="3"
+                     Grid.RowSpan="3"
+                     IsOpen="{Binding ShowDestinationModal}" 
+                     Panel.ZIndex="100">
+
+            <StackPanel Orientation="Vertical"
+                        Background="White"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="500"
+                        Height="300">
+
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="Choose Your Destination Type"
+                               Margin="50, 10, 10, 20"
+                               Style="{DynamicResource DestinationTypeTextBlock}"/>
+
+                    <controls:CustomButton Content="x"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Height="30"
+                                           Width="30"
+                                           Foreground="{DynamicResource SurfaceColor}"
+                                           Background="{DynamicResource DangerColor}"
+                                           HoverColor="{DynamicResource DangerHoverColor}"
+                                           ClickColor="{DynamicResource DangerClickColor}"
+                                           HorizontalContentAlignment="Center"
+                                           VerticalContentAlignment="Center"
+                                           ContentMargin="0, 0, 0, 4"
+                                           Margin="145, 0, 0, 20"
+                                           Command="{Binding ToggleModalCommand}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            Background="Transparent">
+                    
+                    <controls:CustomButton Width="200"
+                                           Height="200"
+                                           CornerRadius="30"
+                                           Margin="45, 0, 10, 0"
+                                           Content="School"
+                                           ContentMargin="0, 0, 0, 15"
+                                           VerticalContentAlignment="Bottom"
+                                           Image="/Assets/Images/School.png"
+                                           ImageWidth="100"
+                                           ImageHeight="100"
+                                           Command="{Binding StartTripCommand}"
+                                           CommandParameter="{x:Static enums:DestinationType.School}"/>
+
+                    <controls:CustomButton Width="200"
+                                           Height="200"
+                                           CornerRadius="30"
+                                           Margin="0, 0, 0, 0"
+                                           Content="Home"
+                                           ContentMargin="0, 0, 0, 15"
+                                           VerticalContentAlignment="Bottom"
+                                           Image="/Assets/Images/Home.png"
+                                           ImageWidth="100"
+                                           ImageHeight="100"
+                                           Command="{Binding StartTripCommand}"
+                                           CommandParameter="{x:Static enums:DestinationType.None}"/>
+                </StackPanel>
+            </StackPanel>
+            
+        </modal:Modal>
+        
         <Image Grid.Row="0"
                Grid.Column="0"
                HorizontalAlignment="Left"
@@ -19,7 +100,6 @@
                MaxHeight="250"
                Margin="20, 25, 0, 0"
                Source="/Assets/Images/Logo.png"/>
-
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="3"
@@ -72,7 +152,7 @@
                                Image="/Assets/Images/Start.png"
                                ImageWidth="60"
                                ImageHeight="60"
-                               Command="{Binding StartTripCommand}"/>
+                               Command="{Binding ToggleModalCommand}"/>
 
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
@@ -103,6 +183,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
+                                       DisabledColor="Transparent"
                                        Command="{Binding OpenLogsCommand}"/>
 
                 <Border BorderBrush="{DynamicResource SplitBorderColor}"
@@ -120,6 +201,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
+                                       DisabledColor="Transparent"
                                        Command="{Binding OpenNotificationsCommand}"/>
             </StackPanel>
         </StackPanel>

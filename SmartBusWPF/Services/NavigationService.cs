@@ -89,6 +89,10 @@ namespace SmartBusWPF.Services
             {
                 throw new InvalidOperationException("CurrentFrame is not set");
             }
+            if (currentFrame.Content != null && currentFrame.Content.GetType() == page.GetType())
+            {
+                return;
+            }
             currentFrame.Navigate(page, args);
         }
     }

@@ -40,6 +40,11 @@ namespace SmartBusWPF
         /// Gets or sets the <see cref="LoggerService"/> instance.
         /// </summary>
         public ILoggerService LoggerService { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IsServiceAvailable"/>. If its true then the API service is available otherwise its down.
+        /// </summary>
+        public bool IsServiceAvailable { get; set; }
         #endregion
 
         #region "Private Methods"
@@ -50,6 +55,7 @@ namespace SmartBusWPF
         {
             ServiceCollection services = new();
             {
+                services.AddMappings();
                 services.AddServices();
                 services.AddViewModels();
             }
@@ -104,11 +110,11 @@ namespace SmartBusWPF
 
             MainWindow = new MainWindow()
             {
-                DataContext = Services.GetService<MainWindowViewModel>(),
-                Content = navigationFrame
+                DataContext = Services.GetService<MainWindowViewModel>()
             };
+            Grid myGrid = (Grid)MainWindow.FindName("myGrid");
+            myGrid.Children.Add(navigationFrame);
             MainWindow.Show();
-
             base.OnStartup(e);
         }
 

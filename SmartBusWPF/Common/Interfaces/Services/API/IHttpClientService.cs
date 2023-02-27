@@ -1,7 +1,7 @@
 ﻿using SmartBusWPF.Models.API;
 using System.Threading.Tasks;
 
-namespace SmartBusWPF.Common.Interfaces.Services
+namespace SmartBusWPF.Common.Interfaces.Services.API
 {
     public interface IHttpClientService
     {

@@ -16,7 +16,7 @@
 
     <Page.Resources>
         <convertors:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <convertors:Base64ImageConverter x:Key="Base64ImageConverter"/>
+        <convertors:Base64ImageConverterConverter x:Key="Base64ImageConverter"/>
     </Page.Resources>
 
     <controls:CustomGrid>
@@ -55,7 +55,7 @@
                                        HoverColor="#4A4A4A"
                                        ClickColor="#2C2C2C"
                                        Width="100"
-                                       Height="40"
+                                       Height="50"
                                        CornerRadius="15"
                                        HorizontalAlignment="Center"
                                        Margin="0, 20, 0, 0"
@@ -142,15 +142,16 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="White"
+                        <Border Background="CornflowerBlue"
+                                BorderBrush="CornflowerBlue"
                                 BorderThickness="1"
-                                Width="42"
-                                Height="42"
-                                CornerRadius="21"
+                                Width="64"
+                                Height="64"
+                                CornerRadius="25"
                                 Margin="0, 0, 13, 13">
-                            <Image Source="{Binding UserImage, Converter={StaticResource Base64ImageConverter}}"
-                                   Width="21"
-                                   Height="21">
+                            <Image Source="{Binding Image, Converter={StaticResource Base64ImageConverter}}"
+                                   Width="50"
+                                   Height="50">
                                 <tooltip:ToolTipService.ToolTip>
                                     <TextBlock Text="{Binding FirstName}"/>
                                 </tooltip:ToolTipService.ToolTip>
@@ -188,8 +189,7 @@
 
                 <uc:LiveMapControl Grid.Column="0"
                                    Grid.Row="1"
-                                   DataContext="{Binding}"
-                                   Panel.ZIndex="1"/>
+                                   DataContext="{Binding}"/>
 
                 <controls:CustomButton Grid.Column="1"
                                        Grid.Row="2"
@@ -204,7 +204,7 @@
                                        CornerRadius="15"
                                        Margin="0, 10, 20, 10"
                                        HorizontalAlignment="Right"
-                                       Command="{Binding StartTripCommand}"/>
+                                       Command="{Binding StopTripCommand}"/>
             </Grid>
         </Grid>
 
@@ -238,6 +238,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
+                                       DisabledColor="Transparent"
                                        Command="{Binding OpenLogsCommand}"/>
 
                 <Border BorderBrush="{DynamicResource SplitBorderColor}"
@@ -255,6 +256,7 @@
                                        Background="Transparent"
                                        HoverColor="#E0E0E0"
                                        ClickColor="#BBBBBB"
+                                       DisabledColor="Transparent"
                                        Command="{Binding OpenNotificationsCommand}"/>
             </StackPanel>
         </StackPanel>

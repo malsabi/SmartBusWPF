@@ -1,27 +1,88 @@
-﻿using SmartBusWPF.Models.API;
+﻿using System;
+using MapsterMapper;
+using System.Net.Http;
+using System.Threading;
+using SmartBusWPF.Models.API;
 using SmartBusWPF.Models.Bus;
+using System.Threading.Tasks;
 using SmartBusWPF.Common.Consts;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SmartBusWPF.Common.Interfaces.Services;
 using SmartBusWPF.DTOs.Auth.Login.Response;
-using SmartBusWPF.DTOs.Auth.Login.Request;
+using SmartBusWPF.Common.Interfaces.Services;
+using SmartBusWPF.Common.Interfaces.Services.API;
 
 namespace SmartBusWPF.ViewModels
 {
     public class MainWindowViewModel : ObservableObject
     {
+        private readonly IMapper mapper;
+        private readonly IAuthService authService;
         private readonly INavigationService navigationService;
-        private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
 
-        public MainWindowViewModel(INavigationService navigationService,
-                                   IHttpClientService httpClientService,   
+        public MainWindowViewModel(IMapper mapper,
+                                   IAuthService authService,
+                                   INavigationService navigationService,
                                    ICryptographyService cryptographyService)
         {
+            this.mapper = mapper;
+            this.authService = authService;
             this.navigationService = navigationService;
-            this.httpClientService = httpClientService;
             this.cryptographyService = cryptographyService;
-            Authenticate();
+            Initialize();
+         
+        }
+
+        private bool isServiceAvailable;
+        public bool IsServiceAvailable
+        {
+            get => !isServiceAvailable;
+            set => SetProperty(ref isServiceAvailable, value);
+        }
+
+
+        private void Initialize()
+        {
+            IsServiceAvailable = true;
+            CheckApiAvailabilityAsync();
+        }
+
+        private async void CheckApiAvailabilityAsync()
+        {
+            SemaphoreSlim apiCheckSemaphore = new(1, 1);
+            while (true)
+            {
+                await apiCheckSemaphore.WaitAsync();
+                if (!await IsAPIAvailableAsync())
+                {
+                    App.Current.IsServiceAvailable = false;
+                    IsServiceAvailable = false;
+                }
+                else
+                {
+                    IsServiceAvailable = true;
+                    Authenticate();
+                }
+                apiCheckSemaphore.Release();
+                await Task.Delay(3000);
+            }
+        }
+
+        private static async Task<bool> IsAPIAvailableAsync()
+        {
+            using (HttpClient httpClient = new())
+            {
+                try
+                {
+                    httpClient.Timeout = TimeSpan.FromSeconds(5);
+                    HttpResponseMessage response = await httpClient.GetAsync(string.Format("{0}{1}", APIConsts.LocalAPIEndPoint, APIConsts.Health.GetHealth));
+                    return response.IsSuccessStatusCode;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
 
         private async void Authenticate()
@@ -30,54 +91,36 @@ namespace SmartBusWPF.ViewModels
             string driverID = Properties.Settings.Default.DriverID;
             string password = Properties.Settings.Default.Password;
 
+            if (App.Current.BusDriverSession != null && App.Current.BusDriverSession.IsActive)
+            {
+                return;
+            }
+
             if (isStaySignedIn && !string.IsNullOrEmpty(driverID) && !string.IsNullOrEmpty(password))
             {
                 driverID = cryptographyService.Decrypt(driverID);
                 password = cryptographyService.Decrypt(password);
 
-                LoginBusDriverRequestDto loginDriverDto = new()
-                {
-                    DriverID = driverID,
-                    Password = password,
-                };
-
-                HttpResponseModel<LoginBusDriverResponseDto> result = await httpClientService.PostAsync<LoginBusDriverRequestDto, LoginBusDriverResponseDto>(loginDriverDto, APIConsts.Auth.LoginBusDriver);
+                HttpResponseModel<LoginBusDriverResponseDto> result = await authService.Login(driverID, password);
 
                 if (result == null || !result.IsSuccess)
                 {
                     navigationService.Navigate<LoginViewModel>();
+                    return;
                 }
-                else
+
+                App.Current.BusDriverSession = new BusDriverSessionModel()
                 {
-                    App.Current.BusDriverSession = new BusDriverSessionModel()
-                    {
-                        BusDriver = new BusDriverModel()
-                        {
-                            ID = result.Response.BusDriverDto.ID,
-                            FirstName = result.Response.BusDriverDto.FirstName,
-                            LastName = result.Response.BusDriverDto.LastName,
-                            Email = result.Response.BusDriverDto.Email,
-                            DriverID = result.Response.BusDriverDto.DriverID,
-                            PhoneNumber = result.Response.BusDriverDto.PhoneNumber,
-                            Country = result.Response.BusDriverDto.Country
-                        },
-                        Bus = new BusModel()
-                        {
-                            ID = result.Response.BusDto.ID,
-                            LicenseNumber = result.Response.BusDto.LicenseNumber,
-                            CurrentLocation = result.Response.BusDto.CurrentLocation,
-                            Capacity = result.Response.BusDto.Capacity
-                        },
-                        AuthToken = result.Response.AuthToken,
-                        IsActive = true
-                    };
-                    navigationService.Navigate<HomeViewModel>();
-                }
+                    BusDriver = mapper.Map<BusDriverModel>(result.Response.BusDriverDto),
+                    Bus = mapper.Map<BusModel>(result.Response.BusDto),
+                    AuthToken = result.Response.AuthToken,
+                    IsActive = true
+                };
+
+                navigationService.Navigate<HomeViewModel>();
+                return;
             }
-            else
-            {
-                navigationService.Navigate<LoginViewModel>();
-            }
+            navigationService.Navigate<LoginViewModel>();
         }
     }
 }

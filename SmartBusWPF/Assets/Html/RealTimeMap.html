@@ -10,30 +10,22 @@
         }
     </style>
     <script>
-        function refreshLocation() {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                // Get the current position
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-
-                // Create a map if it doesn't exist yet
-                if (typeof map === 'undefined') {
-                    map = new Microsoft.Maps.Map('#myMap', {
-                        center: new Microsoft.Maps.Location(lat, lng),
-                        zoom: 19
-                    });
-                }
-
-                // Add a pushpin for the current location
-                var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(lat, lng), {
-                    color: 'red'
+        function refreshLocation(longitude, latitude) 
+        {
+            // Create a map if it doesn't exist yet
+            if (typeof map === 'undefined') {
+                map = new Microsoft.Maps.Map('#myMap', {
+                    center: new Microsoft.Maps.Location(latitude, longitude),
+                    zoom: 19
                 });
-                map.entities.push(pin);
-            });
-        }
+            }
 
-        // Call refreshLocation() every second
-        setInterval(refreshLocation, 1000);
+            // Add a pushpin for the current location
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), {
+                color: 'red'
+            });
+            map.entities.push(pin);
+        }
     </script>
 </head>
 <body>

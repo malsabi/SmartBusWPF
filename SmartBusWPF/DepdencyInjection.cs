@@ -36,6 +36,13 @@ namespace SmartBusWPF
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            //API Services
+            services.AddSingleton<IHttpClientService, HttpClientService>();
+            services.AddSingleton<IStudentService, StudentService>();
+            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<ITripService, TripService>();
+
+            //App Services
             services.AddSingleton<ILoggerService, LoggerService>();
             services.AddSingleton<IProcessMonitorService, ProcessMonitorService>();
             services.AddSingleton<ICryptographyService, CryptographyService>();
@@ -44,12 +51,8 @@ namespace SmartBusWPF
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IBusNotificationService>(new BusNotificationService(APIConsts.NotificationHubEndPoint));
             services.AddSingleton<IHuskyLensService, HuskyLensService>();
-
-            //API Services
-            services.AddSingleton<IHttpClientService, HttpClientService>();
-            services.AddSingleton<IStudentService, StudentService>();
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<ITripService, TripService>();
+            services.AddSingleton<IGeoLocationService, GeoLocationService>();
+            
             return services;
         }
     }

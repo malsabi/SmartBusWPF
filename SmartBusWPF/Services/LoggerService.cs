@@ -1,4 +1,5 @@
-﻿using SmartBusWPF.Common.Enums;
+﻿using System;
+using SmartBusWPF.Common.Enums;
 using System.Collections.Generic;
 using SmartBusWPF.Models.Logging;
 using SmartBusWPF.Common.Interfaces.Services;
@@ -20,7 +21,8 @@ namespace SmartBusWPF.Services
             {
                 LogLevel = logLevel,
                 Source = source,
-                Message = message
+                Message = message,
+                Timestamp = DateTime.Now
             });
         }
 

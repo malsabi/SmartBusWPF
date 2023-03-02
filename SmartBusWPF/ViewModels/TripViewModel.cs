@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using SmartBusWPF.Common.Interfaces.Services.API;
+using SmartBusWPF.Models.GeoLocation;
 
 namespace SmartBusWPF.ViewModels
 {
@@ -24,16 +25,19 @@ namespace SmartBusWPF.ViewModels
         private readonly ITripService tripService;
         private readonly IStudentService studentService;
         private readonly INavigationService navigationService;
+        private readonly IGeoLocationService geoLocationService;
 
         public TripViewModel(IMapper mapper,
                              ITripService tripService,
                              IStudentService studentService,
-                             INavigationService navigationService) : base(navigationService)
+                             INavigationService navigationService,
+                             IGeoLocationService geoLocationService) : base(navigationService)
         {
             this.mapper = mapper;
             this.tripService = tripService;
             this.studentService = studentService;
             this.navigationService = navigationService;
+            this.geoLocationService = geoLocationService;
             Initialize();
         }
 
@@ -236,26 +240,28 @@ namespace SmartBusWPF.ViewModels
         {
             await Task.Run(async ()  => 
             {
-                while (App.Current.BusDriverSession.IsTripStarted)
+                while (App.Current != null && App.Current.BusDriverSession.IsTripStarted)
                 {
-                    double latitude = 0;
-                    double longitude = 0;
+                    GeoModel response = await geoLocationService.GetCurrentLocation();
 
-                    int busID = App.Current.BusDriverSession.Bus.ID;
-                    string authToken = App.Current.BusDriverSession.AuthToken;
-                    string currentLocation = string.Format("{0}|{1}", latitude, longitude);
-
-                    HttpResponseModel<string> updateCurrentLocationResult = await tripService.UpdateBusLocation(busID, currentLocation, authToken);
-
-                    if (updateCurrentLocationResult != null && !updateCurrentLocationResult.IsSuccess)
+                    if (response != null)
                     {
-                        App.Current.LoggerService.Log(LogLevel.Error, "TripViewModel", updateCurrentLocationResult.ProblemDetails.Detail);
-                    }
-                    else
-                    {
-                        App.Current.LoggerService.Log(LogLevel.Info, "TripViewModel", string.Format("Successfully updated the current bus location [{0}]", currentLocation));
-                    }
+                        int busID = App.Current.BusDriverSession.Bus.ID;
+                        string authToken = App.Current.BusDriverSession.AuthToken;
+                        string currentLocation = string.Format("{0}|{1}", response.Longitude, response.Latitude);
 
+                        HttpResponseModel<string> updateCurrentLocationResult = await tripService.UpdateBusLocation(busID, currentLocation, authToken);
+
+                        if (updateCurrentLocationResult != null && !updateCurrentLocationResult.IsSuccess)
+                        {
+                            App.Current.LoggerService.Log(LogLevel.Error, "TripViewModel", updateCurrentLocationResult.ProblemDetails.Detail);
+                        }
+                        else
+                        {
+                            App.Current.BusDriverSession.Bus.CurrentLocation = currentLocation;
+                            App.Current.LoggerService.Log(LogLevel.Info, "TripViewModel", string.Format("Successfully updated the current bus location [{0}]", currentLocation));
+                        }
+                    }
                     await Task.Delay(3000);
                 }
             });

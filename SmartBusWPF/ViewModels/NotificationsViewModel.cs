@@ -7,13 +7,10 @@ namespace SmartBusWPF.ViewModels
     public class NotificationsViewModel : BaseViewModel
     {
         private readonly INavigationService navigationService;
-        private readonly IBusNotificationService busNotificationService;
 
-        public NotificationsViewModel(INavigationService navigationService,
-                                      IBusNotificationService busNotificationService) : base(navigationService)
+        public NotificationsViewModel(INavigationService navigationService) : base(navigationService)
         {
             this.navigationService = navigationService;
-            this.busNotificationService = busNotificationService;
             Initialize();
         }
 
@@ -21,7 +18,6 @@ namespace SmartBusWPF.ViewModels
 
         private void Initialize()
         {
-            //await busNotificationService.JoinBusGroupAsync(1);
         }
     }
 }

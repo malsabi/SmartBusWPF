@@ -4,7 +4,6 @@ using System.Reflection;
 using SmartBusWPF.Services;
 using SmartBusWPF.ViewModels;
 using SmartBusWPF.Services.API;
-using SmartBusWPF.Common.Consts;
 using SmartBusWPF.Common.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using SmartBusWPF.Common.Interfaces.Services.API;
@@ -49,7 +48,6 @@ namespace SmartBusWPF
             services.AddSingleton<IServerSocketService, ServerSocketService>();
             services.AddSingleton<IClientSocketService, ClientSocketService>();
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<IBusNotificationService>(new BusNotificationService(APIConsts.NotificationHubEndPoint));
             services.AddSingleton<IHuskyLensService, HuskyLensService>();
             services.AddSingleton<IGeoLocationService, GeoLocationService>();
             

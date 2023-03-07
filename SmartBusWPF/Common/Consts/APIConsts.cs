@@ -2,11 +2,9 @@
 {
     public static class APIConsts
     {
-        public const string LocalAPIEndPoint = "https://localhost:7145";
+        public const string LocalAPIEndPoint = "https://smartbus-api.azurewebsites.net/";
 
-        public const string ProductionAPIEndPoint = "https://localhost:7145";
-
-        public const string NotificationHubEndPoint = LocalAPIEndPoint + "/notification_hub";
+        public const string ProductionAPIEndPoint = "https://smartbus-api.azurewebsites.net/";
 
         public const string Scheme = "Bearer";
 

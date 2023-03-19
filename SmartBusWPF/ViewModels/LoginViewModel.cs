@@ -27,6 +27,7 @@ namespace SmartBusWPF.ViewModels
             Initialize();
         }
 
+        #region "Properties"
         public IRelayCommand LoginCommand { get; private set; }
 
         private string driverID;
@@ -91,6 +92,7 @@ namespace SmartBusWPF.ViewModels
             get => loginButtonText;
             set => SetProperty(ref loginButtonText, value);
         }
+        #endregion
 
         private void Initialize()
         {
@@ -102,6 +104,7 @@ namespace SmartBusWPF.ViewModels
             LoginButtonText = "LOGIN";
         }
 
+        #region "Login"
         private bool CanLogin()
         {
             return !string.IsNullOrEmpty(DriverID) && !string.IsNullOrEmpty(Password) && !IsLoginInProcess;
@@ -144,5 +147,6 @@ namespace SmartBusWPF.ViewModels
                 ShowLoginStatus = true;
             }
         }
+        #endregion
     }
 }

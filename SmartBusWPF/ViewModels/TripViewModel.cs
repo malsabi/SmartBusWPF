@@ -99,6 +99,15 @@ namespace SmartBusWPF.ViewModels
             WeakReferenceMessenger.Default.Register(this);
         }
 
+        #region "Play Sound"
+        private void PlaySound(string soundName)
+        {
+            mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", soundName)));
+            mediaPlayer.Play();
+            mediaPlayer.Close();
+        }
+        #endregion
+
         #region "Stop Trip Command"
         private bool CanStopTrip()
         {
@@ -110,8 +119,7 @@ namespace SmartBusWPF.ViewModels
             if (ActiveStudents.Count > 0)
             {
                 ShowWarningModal = true;
-                mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", "CloseTripDenied.mp3")));
-                mediaPlayer.Play();
+                PlaySound("CloseTripDenied.mp3");
             }
             else
             {
@@ -187,6 +195,7 @@ namespace SmartBusWPF.ViewModels
             {
                 Status = TripStatus.STUDENT_INVALID_BUS;
                 StatusMessage = string.Format(TripStatusConsts.STUDENT_INVALID_BUS, student.BelongsToBusID);
+                PlaySound("StudentCooldown.mp3");
                 await Task.Delay(1000);
                 return;
             }
@@ -201,8 +210,6 @@ namespace SmartBusWPF.ViewModels
                 }
                 Status = TripStatus.STUDENT_COOLDOWN;
                 StatusMessage = string.Format(TripStatusConsts.STUDENT_COOLDOWN, TimeSpan.FromMinutes(1) - timeDifference);
-                mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", "StudentCooldown.mp3")));
-                mediaPlayer.Play();
                 await Task.Delay(1000);
                 return;
             }

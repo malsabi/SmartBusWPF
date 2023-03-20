@@ -195,7 +195,7 @@ namespace SmartBusWPF.ViewModels
             {
                 Status = TripStatus.STUDENT_INVALID_BUS;
                 StatusMessage = string.Format(TripStatusConsts.STUDENT_INVALID_BUS, student.BelongsToBusID);
-                PlaySound("StudentCooldown.mp3");
+                PlaySound("StudentUnknown.mp3");
                 await Task.Delay(1000);
                 return;
             }

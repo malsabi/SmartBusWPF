@@ -185,6 +185,7 @@ namespace SmartBusWPF.ViewModels
             {
                 Status = TripStatus.STUDENT_UNKNOWN;
                 StatusMessage = TripStatusConsts.STUDENT_UNKNOWN;
+                PlaySound("StudentUnknown.mp3");
                 await Task.Delay(1000);
                 return;
             }

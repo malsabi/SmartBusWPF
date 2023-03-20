@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MapsterMapper;
+using System.Windows.Media;
 using SmartBusWPF.Messages;
 using System.Threading.Tasks;
 using SmartBusWPF.Models.API;
@@ -10,10 +11,12 @@ using SmartBusWPF.Common.Consts;
 using SmartBusWPF.Models.Student;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using SmartBusWPF.Models.GeoLocation;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using SmartBusWPF.Common.Interfaces.Services.API;
-using SmartBusWPF.Models.GeoLocation;
+using Microsoft.Win32;
+using System.IO;
 
 namespace SmartBusWPF.ViewModels
 {
@@ -21,6 +24,8 @@ namespace SmartBusWPF.ViewModels
     {
         private bool isExecuting;
         private object isExecutingLock;
+        private MediaPlayer mediaPlayer;
+
         private readonly IMapper mapper;
         private readonly ITripService tripService;
         private readonly IStudentService studentService;
@@ -83,6 +88,7 @@ namespace SmartBusWPF.ViewModels
         {
             isExecuting = false;
             isExecutingLock = new object();
+            mediaPlayer = new MediaPlayer();
             StopTripCommand = new RelayCommand(StopTrip, CanStopTrip);
             CloseModalCommand = new RelayCommand(CloseModal);
             ActiveStudents = new ObservableCollection<StudentModel>();
@@ -104,6 +110,8 @@ namespace SmartBusWPF.ViewModels
             if (ActiveStudents.Count > 0)
             {
                 ShowWarningModal = true;
+                mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", "CloseTripDenied.mp3")));
+                mediaPlayer.Play();
             }
             else
             {
@@ -193,6 +201,8 @@ namespace SmartBusWPF.ViewModels
                 }
                 Status = TripStatus.STUDENT_COOLDOWN;
                 StatusMessage = string.Format(TripStatusConsts.STUDENT_COOLDOWN, TimeSpan.FromMinutes(1) - timeDifference);
+                mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", "StudentCooldown.mp3")));
+                mediaPlayer.Play();
                 await Task.Delay(1000);
                 return;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using MapsterMapper;
 using System.Windows.Media;
@@ -15,8 +16,6 @@ using SmartBusWPF.Models.GeoLocation;
 using CommunityToolkit.Mvvm.Messaging;
 using SmartBusWPF.Common.Interfaces.Services;
 using SmartBusWPF.Common.Interfaces.Services.API;
-using Microsoft.Win32;
-using System.IO;
 
 namespace SmartBusWPF.ViewModels
 {
@@ -24,7 +23,6 @@ namespace SmartBusWPF.ViewModels
     {
         private bool isExecuting;
         private object isExecutingLock;
-        private MediaPlayer mediaPlayer;
 
         private readonly IMapper mapper;
         private readonly ITripService tripService;
@@ -88,7 +86,6 @@ namespace SmartBusWPF.ViewModels
         {
             isExecuting = false;
             isExecutingLock = new object();
-            mediaPlayer = new MediaPlayer();
             StopTripCommand = new RelayCommand(StopTrip, CanStopTrip);
             CloseModalCommand = new RelayCommand(CloseModal);
             ActiveStudents = new ObservableCollection<StudentModel>();
@@ -102,9 +99,17 @@ namespace SmartBusWPF.ViewModels
         #region "Play Sound"
         private void PlaySound(string soundName)
         {
+            MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.Open(new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds", soundName)));
+
+            mediaPlayer.MediaEnded += (sender, e) =>
+            {
+                mediaPlayer.Stop();
+                mediaPlayer.Close();
+                mediaPlayer = null;
+            };
+
             mediaPlayer.Play();
-            mediaPlayer.Close();
         }
         #endregion
 

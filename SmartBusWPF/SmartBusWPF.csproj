@@ -32,6 +32,7 @@
     <None Remove="Assets\Images\UserSchool.png" />
     <None Remove="Assets\Images\Warning.png" />
     <None Remove="Assets\Sounds\CloseTripDenied.mp3" />
+    <None Remove="Assets\Sounds\StudentUnknown.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +79,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Sounds\CloseTripDenied.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sounds\StudentUnknown.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Bus.ico" />

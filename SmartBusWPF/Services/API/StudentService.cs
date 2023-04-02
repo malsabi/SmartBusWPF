@@ -15,9 +15,9 @@ namespace SmartBusWPF.Services.API
             this.httpClientService = httpClientService;
         }
 
-        public async Task<HttpResponseModel<StudentDto>> GetStudent(int studentID, string authToken)
+        public async Task<HttpResponseModel<StudentDto>> GetStudentByFaceRecognitionID(int faceRecognitionId, string authToken)
         {
-            HttpResponseModel<StudentDto> result = await httpClientService.GetAsync<StudentDto>(APIConsts.Student.GetStudent, authToken, studentID.ToString());
+            HttpResponseModel<StudentDto> result = await httpClientService.GetAsync<StudentDto>(APIConsts.Student.GetByFaceRecognitionId, authToken, faceRecognitionId.ToString());
             return result;
         }
     }

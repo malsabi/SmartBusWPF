@@ -25,6 +25,7 @@
         public static class Student
         {
             public const string GetStudent = "/api/Student/{0}";
+            public const string GetByFaceRecognitionId = "/api/Student/faceRecognition/{0}";
         }
 
         public static class Trip

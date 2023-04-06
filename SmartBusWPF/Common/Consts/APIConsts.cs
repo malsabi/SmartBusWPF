@@ -2,9 +2,9 @@
 {
     public static class APIConsts
     {
-        public const string LocalAPIEndPoint = "https://smartbus-api.azurewebsites.net/";
+        public const string LocalAPIEndPoint = "https://smartbus-api.ngrok.io";
 
-        public const string ProductionAPIEndPoint = "https://smartbus-api.azurewebsites.net/";
+        public const string ProductionAPIEndPoint = "https://smartbus-api.ngrok.io";
 
         public const string Scheme = "Bearer";
 

@@ -52,13 +52,16 @@ namespace SmartBusWPF.Views.UserControls
 
                     if (!string.IsNullOrEmpty(currentLocation))
                     {
-                        float longitude = float.Parse(currentLocation.Split('|')[0]);
-                        float latitude = float.Parse(currentLocation.Split('|')[1]);
-
-                        await Dispatcher.BeginInvoke(new Action(() =>
+                        if (currentLocation != "N/A" && currentLocation.Contains("|"))
                         {
-                            Browser.ExecuteScriptAsync("refreshLocation", longitude, latitude);
-                        }));
+                            float longitude = float.Parse(currentLocation.Split('|')[0]);
+                            float latitude = float.Parse(currentLocation.Split('|')[1]);
+
+                            await Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                Browser.ExecuteScriptAsync("refreshLocation", longitude, latitude);
+                            }));
+                        }
                     }
                     await Task.Delay(3000);
                 }

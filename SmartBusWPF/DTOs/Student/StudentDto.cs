@@ -18,6 +18,6 @@ namespace SmartBusWPF.DTOs.Student
         public bool IsAtHome { get; set; } = true;
         public bool IsOnBus { get; set; } = false;
         public int ParentID { get; set; }
-        public int BusID { get; set; }
+        public int? BusID { get; set; }
     }
 }

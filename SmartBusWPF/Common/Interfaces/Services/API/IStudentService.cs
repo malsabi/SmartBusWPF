@@ -6,6 +6,6 @@ namespace SmartBusWPF.Common.Interfaces.Services.API
 {
     public interface IStudentService
     {
-        public Task<HttpResponseModel<StudentDto>> GetStudentByFaceRecognitionID(int faceRecognitionId, string authToken);
+        public Task<HttpResponseModel<StudentDto>> GetStudentByFaceRecognitionID(int id, string authToken);
     }
 }

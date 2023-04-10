@@ -182,9 +182,9 @@ namespace SmartBusWPF.ViewModels
             }
         }
 
-        private async Task AddStudentToTrip(int busID, int studentID, string authToken)
+        private async Task AddStudentToTrip(int busID, int id, string authToken)
         {
-            HttpResponseModel<StudentDto> getStudentResult = await studentService.GetStudentByFaceRecognitionID(studentID, authToken);
+            HttpResponseModel<StudentDto> getStudentResult = await studentService.GetStudentByFaceRecognitionID(id, authToken);
 
             if (getStudentResult == null || !getStudentResult.IsSuccess)
             {
